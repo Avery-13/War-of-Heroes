@@ -1,0 +1,71 @@
+[gd_scene load_steps=10 format=3 uid="uid://4d4si8bfk7f7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbody"]
+albedo_color = Color(0.340829, 0.710834, 0.630338, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hlvv7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_22jun"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_japjj"]
+albedo_color = Color(0.72532, 2.9456e-05, 0.534541, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kqha5"]
+
+[sub_resource type="Sky" id="Sky_450qb"]
+sky_material = SubResource("ProceduralSkyMaterial_kqha5")
+
+[sub_resource type="Environment" id="Environment_eqyb1"]
+background_mode = 2
+sky = SubResource("Sky_450qb")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lvnvh"]
+albedo_color = Color(0.743844, 0.404154, 0.2554, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_amjdk"]
+material = SubResource("StandardMaterial3D_lvnvh")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(20.025, 0, 0, 0, 20.025, 0, 0, 0, 20.025, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_qbody")
+mesh = SubResource("PlaneMesh_hlvv7")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6456, 0.928138, -16.2254)
+mesh = SubResource("BoxMesh_22jun")
+skeleton = NodePath("../MeshInstance3D2")
+surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6847, 1.39221, 10.0827)
+mesh = SubResource("BoxMesh_22jun")
+skeleton = NodePath("../MeshInstance3D6")
+surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0390997, 0.464069, -8.11271)
+mesh = SubResource("BoxMesh_22jun")
+surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.984555, 0.00234971, -0.175059, 0.175075, -0.0132139, 0.984466, 0, -0.99991, -0.0134212, -25.9383, 56.8431, -6.27851)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eqyb1")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.39904, 0.804071, 0.0524025)
+mesh = SubResource("CylinderMesh_amjdk")
+skeleton = NodePath("../MeshInstance3D3")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.30783, 1.11208, 0)
+mesh = SubResource("CylinderMesh_amjdk")
+
+[node name="RTScamera" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="RTScamera"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 20, 0)
