@@ -1,4 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=11 format=3 uid="uid://4d4si8bfk7f7"]
+
+[ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbody"]
 albedo_color = Color(0.340829, 0.710834, 0.630338, 1)
@@ -66,6 +68,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.30783, 1.11208, 0)
 mesh = SubResource("CylinderMesh_amjdk")
 
 [node name="RTScamera" type="Node3D" parent="."]
+script = ExtResource("1_djirp")
+zoom_speed = 0.5
 
 [node name="Camera3D" type="Camera3D" parent="RTScamera"]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 20, 0)
