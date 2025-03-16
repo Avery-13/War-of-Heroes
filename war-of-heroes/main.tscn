@@ -1,6 +1,7 @@
-[gd_scene load_steps=32 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=33 format=3 uid="uid://4d4si8bfk7f7"]
 
 [ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
+[ext_resource type="PackedScene" uid="uid://bo53iqqlip5fa" path="res://Terrain_and_Model/Buildings/Iron Mine/IronMine.fbx" id="2_lepqq"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="2_m0t28"]
 [ext_resource type="Resource" path="res://Terrain_and_Model/HeightTerrain/data.hterrain" id="3_r3leg"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="4_pgv6g"]
@@ -205,4 +206,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 2, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Tank"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 6, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="StaticBody3D_IronMine" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -13)
+
+[node name="IronMine" parent="StaticBody3D_IronMine" instance=ExtResource("2_lepqq")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_IronMine"]
+transform = Transform3D(6, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, -1)
 shape = SubResource("BoxShape3D_pskro")
