@@ -82,15 +82,15 @@ albedo_texture = ExtResource("24_8syuh")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o74q7"]
 albedo_color = Color(1, 1, 0, 1)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_xwtqd"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j06j0"]
-albedo_color = Color(1, 1, 0, 1)
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_yoq0l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r4tom"]
 albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xwtqd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j06j0"]
+albedo_color = Color(1, 1, 0, 1)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_r85s5")
@@ -304,7 +304,7 @@ visible = false
 mesh = SubResource("CylinderMesh_xy7wt")
 surface_material_override/0 = SubResource("StandardMaterial3D_o74q7")
 
-[node name="RigidBody3D_Hero" type="CharacterBody3D" parent="." groups=["Ally_Units"]]
+[node name="RigidBody3D_Hero" type="CharacterBody3D" parent="." groups=["Enemy_Units"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 0)
 script = ExtResource("23_kfgbp")
 
@@ -319,6 +319,12 @@ transform = Transform3D(1, 0, 0, 0, 0.03, 0, 0, 0, 1, 0, 0, 0)
 visible = false
 mesh = SubResource("CylinderMesh_xy7wt")
 surface_material_override/0 = SubResource("StandardMaterial3D_o74q7")
+
+[node name="SelectionIndicatorEnemy" type="MeshInstance3D" parent="RigidBody3D_Hero"]
+transform = Transform3D(1.145, 0, 0, 0, 0.003, 0, 0, 0, 1.145, 0, 0, 0.0857542)
+mesh = SubResource("CylinderMesh_yoq0l")
+skeleton = NodePath("../SelectionIndicator")
+surface_material_override/0 = SubResource("StandardMaterial3D_r4tom")
 
 [node name="RigidBody3D_Tank" type="CharacterBody3D" parent="." groups=["Enemy_Units"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 7)
@@ -338,7 +344,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j06j0")
 
 [node name="SelectionIndicatorEnemy" type="MeshInstance3D" parent="RigidBody3D_Tank"]
 transform = Transform3D(3.34, 0, 0, 0, 0.01, 0, 0, 0, 3.34, 0, 0, -1.09128)
-visible = false
 mesh = SubResource("CylinderMesh_yoq0l")
 skeleton = NodePath("../SelectionIndicator")
 surface_material_override/0 = SubResource("StandardMaterial3D_r4tom")

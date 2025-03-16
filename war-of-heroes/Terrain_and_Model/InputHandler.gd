@@ -21,6 +21,8 @@ func handle_left_click(mouse_position: Vector2) -> void:
 	if ray_result:
 		if ray_result.collider.is_in_group("Ally_Units"):
 			select_unit(ray_result.collider)
+		elif ray_result.collider.is_in_group("Enemy_Units") and selected_unit:
+			attack_enemy(ray_result.collider)
 		elif selected_unit:
 			move_unit(ray_result.position)
 
@@ -42,3 +44,7 @@ func deselect_unit() -> void:
 func move_unit(target_position: Vector3) -> void:
 	if selected_unit:
 		selected_unit.move_to(target_position)
+
+func attack_enemy(enemy: Node3D) -> void:
+	if selected_unit:
+		selected_unit.attack(enemy)
