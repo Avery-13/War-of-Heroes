@@ -1,6 +1,7 @@
-[gd_scene load_steps=44 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=52 format=3 uid="uid://4d4si8bfk7f7"]
 
 [ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
+[ext_resource type="Script" path="res://Terrain_and_Model/InputHandler.gd" id="1_r85s5"]
 [ext_resource type="PackedScene" uid="uid://bo53iqqlip5fa" path="res://Terrain_and_Model/Buildings/Iron Mine/IronMine.fbx" id="2_lepqq"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="2_m0t28"]
 [ext_resource type="Resource" path="res://Terrain_and_Model/HeightTerrain/data.hterrain" id="3_r3leg"]
@@ -23,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://8v8xmu785awg" path="res://Terrain_and_Model/Buildings/HQ Building/service_building_1_color_+_door.png" id="21_vynbn"]
 [ext_resource type="Texture2D" uid="uid://tmtqgo4s3j4p" path="res://Terrain_and_Model/Buildings/HQ Building/service_building_1_light.png" id="22_s46kj"]
 [ext_resource type="ArrayMesh" uid="uid://c7e385xya3rmk" path="res://Terrain_and_Model/Buildings/Turrent/Sci Fi AA Turret.obj" id="23_6axob"]
+[ext_resource type="Script" path="res://Terrain_and_Model/Unit.gd" id="23_kfgbp"]
 [ext_resource type="Texture2D" uid="uid://b4yj4jkgj7xn3" path="res://Terrain_and_Model/Buildings/Turrent/Turret_Color.jpg" id="24_8syuh"]
 [ext_resource type="PackedScene" uid="uid://d2cqkupime5mi" path="res://Terrain_and_Model/Units/WorkerModel/Worker.fbx" id="24_m1tm8"]
 [ext_resource type="PackedScene" uid="uid://ci5r3obn5vouv" path="res://Terrain_and_Model/Units/HeroModel/Hero.fbx" id="25_y1l45"]
@@ -64,6 +66,7 @@ textures = [[ExtResource("5_ijmai"), ExtResource("6_glfnf"), ExtResource("7_tnt8
 [sub_resource type="BoxShape3D" id="BoxShape3D_k6drd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pskro"]
+size = Vector3(1, 1, 1.91064)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n7i1w"]
 albedo_texture = ExtResource("21_vynbn")
@@ -74,7 +77,23 @@ albedo_texture = ExtResource("22_s46kj")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lle50"]
 albedo_texture = ExtResource("24_8syuh")
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_xy7wt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o74q7"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xwtqd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j06j0"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_yoq0l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r4tom"]
+albedo_color = Color(1, 0, 0, 1)
+
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_r85s5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(20.025, 0, 0, 0, 20.025, 0, 0, 0, 20.025, 0, 3, 0)
@@ -237,8 +256,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_lle50")
 transform = Transform3D(4, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
 shape = SubResource("BoxShape3D_pskro")
 
-[node name="RigidBody3D_Marksman" type="RigidBody3D" parent="."]
+[node name="RigidBody3D_Marksman" type="CharacterBody3D" parent="." groups=["Ally_Units"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 0)
+script = ExtResource("23_kfgbp")
 
 [node name="Marksman" parent="RigidBody3D_Marksman" instance=ExtResource("15_q3tb1")]
 
@@ -246,8 +266,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 0)
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
 shape = SubResource("BoxShape3D_pskro")
 
-[node name="RigidBody3D_Infantry" type="RigidBody3D" parent="."]
+[node name="SelectionIndicator" type="MeshInstance3D" parent="RigidBody3D_Marksman"]
+transform = Transform3D(1, 0, 0, 0, 0.03, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+mesh = SubResource("CylinderMesh_xy7wt")
+surface_material_override/0 = SubResource("StandardMaterial3D_o74q7")
+
+[node name="RigidBody3D_Infantry" type="CharacterBody3D" parent="." groups=["Ally_Units"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2, 0)
+script = ExtResource("23_kfgbp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Infantry"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
@@ -255,8 +282,15 @@ shape = SubResource("BoxShape3D_pskro")
 
 [node name="Infantry" parent="RigidBody3D_Infantry" instance=ExtResource("16_eg7ir")]
 
-[node name="RigidBody3D_Worker" type="RigidBody3D" parent="."]
+[node name="SelectionIndicator" type="MeshInstance3D" parent="RigidBody3D_Infantry"]
+transform = Transform3D(1, 0, 0, 0, 0.03, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+mesh = SubResource("CylinderMesh_xy7wt")
+surface_material_override/0 = SubResource("StandardMaterial3D_o74q7")
+
+[node name="RigidBody3D_Worker" type="CharacterBody3D" parent="." groups=["Ally_Units"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 0)
+script = ExtResource("23_kfgbp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Worker"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
@@ -264,8 +298,15 @@ shape = SubResource("BoxShape3D_pskro")
 
 [node name="Worker" parent="RigidBody3D_Worker" instance=ExtResource("24_m1tm8")]
 
-[node name="RigidBody3D_Hero" type="RigidBody3D" parent="."]
+[node name="SelectionIndicator" type="MeshInstance3D" parent="RigidBody3D_Worker"]
+transform = Transform3D(1, 0, 0, 0, 0.03, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+mesh = SubResource("CylinderMesh_xy7wt")
+surface_material_override/0 = SubResource("StandardMaterial3D_o74q7")
+
+[node name="RigidBody3D_Hero" type="CharacterBody3D" parent="." groups=["Ally_Units"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 0)
+script = ExtResource("23_kfgbp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Hero"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
@@ -273,11 +314,31 @@ shape = SubResource("BoxShape3D_pskro")
 
 [node name="Hero" parent="RigidBody3D_Hero" instance=ExtResource("25_y1l45")]
 
-[node name="RigidBody3D_Tank" type="RigidBody3D" parent="."]
+[node name="SelectionIndicator" type="MeshInstance3D" parent="RigidBody3D_Hero"]
+transform = Transform3D(1, 0, 0, 0, 0.03, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+mesh = SubResource("CylinderMesh_xy7wt")
+surface_material_override/0 = SubResource("StandardMaterial3D_o74q7")
+
+[node name="RigidBody3D_Tank" type="CharacterBody3D" parent="." groups=["Enemy_Units"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 7)
+script = ExtResource("23_kfgbp")
 
 [node name="Tank" parent="RigidBody3D_Tank" instance=ExtResource("17_efxle")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Tank"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Tank" groups=["Enemy_Units"]]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, -0.910645)
 shape = SubResource("BoxShape3D_pskro")
+
+[node name="SelectionIndicator" type="MeshInstance3D" parent="RigidBody3D_Tank"]
+transform = Transform3D(3.34, 0, 0, 0, 0.01, 0, 0, 0, 3.34, 0, 0, -1.09128)
+visible = false
+mesh = SubResource("CylinderMesh_xwtqd")
+surface_material_override/0 = SubResource("StandardMaterial3D_j06j0")
+
+[node name="SelectionIndicatorEnemy" type="MeshInstance3D" parent="RigidBody3D_Tank"]
+transform = Transform3D(3.34, 0, 0, 0, 0.01, 0, 0, 0, 3.34, 0, 0, -1.09128)
+visible = false
+mesh = SubResource("CylinderMesh_yoq0l")
+skeleton = NodePath("../SelectionIndicator")
+surface_material_override/0 = SubResource("StandardMaterial3D_r4tom")
