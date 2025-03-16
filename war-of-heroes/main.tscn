@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=44 format=3 uid="uid://4d4si8bfk7f7"]
 
 [ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
 [ext_resource type="PackedScene" uid="uid://bo53iqqlip5fa" path="res://Terrain_and_Model/Buildings/Iron Mine/IronMine.fbx" id="2_lepqq"]
@@ -24,6 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://tmtqgo4s3j4p" path="res://Terrain_and_Model/Buildings/HQ Building/service_building_1_light.png" id="22_s46kj"]
 [ext_resource type="ArrayMesh" uid="uid://c7e385xya3rmk" path="res://Terrain_and_Model/Buildings/Turrent/Sci Fi AA Turret.obj" id="23_6axob"]
 [ext_resource type="Texture2D" uid="uid://b4yj4jkgj7xn3" path="res://Terrain_and_Model/Buildings/Turrent/Turret_Color.jpg" id="24_8syuh"]
+[ext_resource type="PackedScene" uid="uid://d2cqkupime5mi" path="res://Terrain_and_Model/Units/WorkerModel/Worker.fbx" id="24_m1tm8"]
+[ext_resource type="PackedScene" uid="uid://ci5r3obn5vouv" path="res://Terrain_and_Model/Units/HeroModel/Hero.fbx" id="25_y1l45"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbody"]
 albedo_color = Color(0.340829, 0.710834, 0.630338, 1)
@@ -74,7 +76,7 @@ albedo_texture = ExtResource("24_8syuh")
 
 [node name="Node3D" type="Node3D"]
 
-[node name="MeshInstance3D (Not needed anymore?)" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(20.025, 0, 0, 0, 20.025, 0, 0, 0, 20.025, 0, 3, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_qbody")
@@ -82,18 +84,21 @@ mesh = SubResource("PlaneMesh_hlvv7")
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6456, 3, -16.2254)
+visible = false
 mesh = SubResource("BoxMesh_22jun")
 skeleton = NodePath("../MeshInstance3D2")
 surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6847, 3, 10.0827)
+visible = false
 mesh = SubResource("BoxMesh_22jun")
 skeleton = NodePath("../MeshInstance3D6")
 surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0390997, 3, -8.11271)
+visible = false
 mesh = SubResource("BoxMesh_22jun")
 surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
 
@@ -106,11 +111,13 @@ environment = SubResource("Environment_eqyb1")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.39904, 3, 0.0524025)
+visible = false
 mesh = SubResource("CylinderMesh_amjdk")
 skeleton = NodePath("../MeshInstance3D3")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.30783, 3, 0)
+visible = false
 mesh = SubResource("CylinderMesh_amjdk")
 
 [node name="RTScamera" type="Node3D" parent="."]
@@ -154,17 +161,16 @@ skeleton = NodePath("../..")
 shape = SubResource("CapsuleShape3D_whd2p")
 
 [node name="StaticBody3D_Money" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 5)
 
 [node name="reinforced_crate_metallic_clasp_01" parent="StaticBody3D_Money" instance=ExtResource("12_qeeiw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Money"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_k6drd")
 
 [node name="StaticBody3D_Health" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 5)
 
 [node name="MedKit" parent="StaticBody3D_Health" instance=ExtResource("13_vc86g")]
 
@@ -183,45 +189,6 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Construction"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 shape = SubResource("BoxShape3D_k6drd")
-
-[node name="StaticBody3D_Construction2" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99, 5)
-
-[node name="ConcreteSlab1" type="MeshInstance3D" parent="StaticBody3D_Construction2"]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
-mesh = ExtResource("14_myht2")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Construction2"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-shape = SubResource("BoxShape3D_pskro")
-
-[node name="StaticBody3D_Marksman" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 0)
-
-[node name="Marksman" parent="StaticBody3D_Marksman" instance=ExtResource("15_q3tb1")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Marksman"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
-shape = SubResource("BoxShape3D_pskro")
-
-[node name="StaticBody3D_Infantry" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 2, 0)
-
-[node name="Infantry" parent="StaticBody3D_Infantry" instance=ExtResource("16_eg7ir")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Infantry"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
-shape = SubResource("BoxShape3D_pskro")
-
-[node name="StaticBody3D_Tank" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 2, 0)
-
-[node name="Tank" parent="StaticBody3D_Tank" instance=ExtResource("17_efxle")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Tank"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 6, 0, 1, 0)
-shape = SubResource("BoxShape3D_pskro")
 
 [node name="StaticBody3D_IronMine" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -13)
@@ -268,4 +235,49 @@ surface_material_override/0 = SubResource("StandardMaterial3D_lle50")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Turrent"]
 transform = Transform3D(4, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="RigidBody3D_Marksman" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 0)
+
+[node name="Marksman" parent="RigidBody3D_Marksman" instance=ExtResource("15_q3tb1")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Marksman"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="RigidBody3D_Infantry" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Infantry"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="Infantry" parent="RigidBody3D_Infantry" instance=ExtResource("16_eg7ir")]
+
+[node name="RigidBody3D_Worker" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Worker"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="Worker" parent="RigidBody3D_Worker" instance=ExtResource("24_m1tm8")]
+
+[node name="RigidBody3D_Hero" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Hero"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="Hero" parent="RigidBody3D_Hero" instance=ExtResource("25_y1l45")]
+
+[node name="RigidBody3D_Tank" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 2, 7)
+
+[node name="Tank" parent="RigidBody3D_Tank" instance=ExtResource("17_efxle")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D_Tank"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
 shape = SubResource("BoxShape3D_pskro")
