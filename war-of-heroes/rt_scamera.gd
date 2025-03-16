@@ -8,10 +8,13 @@ extends Node3D
 @export var edge_scroll_margin: int = 20  # Pixels from screen edge to trigger movement
 
 var camera: Camera3D
+var selectedUnit: CharacterBody3D
+var ally_units
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	camera = $Camera3D  # Get the camera reference
+	ally_units = get_tree().get_nodes_in_group("Ally_Units") # Gets all the ally units in the Node -> Scene Groups
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -30,7 +33,7 @@ func _process(delta: float) -> void:
 		move_direction.x -= 1
 	if Input.is_action_pressed("move_right") or mouse_position.x > screen_size.x - edge_scroll_margin:
 		move_direction.x += 1
-
+		
 	# Normalize diagonal movement
 	if move_direction != Vector3.ZERO:
 		move_direction = move_direction.normalized()
@@ -38,6 +41,12 @@ func _process(delta: float) -> void:
 	# Apply movement
 	position += move_direction * move_speed * delta
 	
+	# Camera Movement based on Tracking an ally Unit 
+	if Input.is_action_pressed("ui_accept"): 
+		for unit in ally_units:
+			if (unit.return_selected() == true):
+				selectedUnit = unit
+				position = selectedUnit.position + Vector3(0, 0, camera.size)
 	
 func _input(event):
 	if event is InputEventMouseMotion:
