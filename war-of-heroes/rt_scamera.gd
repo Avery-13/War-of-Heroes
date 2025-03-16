@@ -45,9 +45,9 @@ func _input(event):
 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			camera.position.y -= zoom_speed
+			camera.size -= zoom_speed
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			camera.position.y += zoom_speed
+			camera.size += zoom_speed
 
 		# Clamp zoom to avoid going too low or too high
-		camera.position.y = clamp(camera.position.y, min_zoom, max_zoom)
+		camera.size = clamp(camera.size, min_zoom, max_zoom)

@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://de1la5doit8ee" path="res://Terrain_and_Model/TerrainTextures/Cliff/Rock028_1K-JPG_NormalDX.jpg" id="9_hpcle"]
 [ext_resource type="Texture2D" uid="uid://c4irfajmyouhg" path="res://Terrain_and_Model/TerrainTextures/Gravel/Rocks006_1K-JPG_NormalDX.jpg" id="10_pjrsp"]
 [ext_resource type="Script" path="res://Terrain_and_Model/character_body_3d.gd" id="11_wgywa"]
-[ext_resource type="PackedScene" uid="uid://bdrvd0khp0oj1" path="res://Terrain_and_Model/Collectibles/Money Resource/reinforced_crate_metallic_clasp_01.FBX" id="12_qeeiw"]
+[ext_resource type="PackedScene" uid="uid://cxnmlcnkyhi4p" path="res://Terrain_and_Model/Collectibles/Money Resource/reinforced_crate_metallic_clasp_01.FBX" id="12_qeeiw"]
 [ext_resource type="PackedScene" uid="uid://bv12g7tj0vsl6" path="res://Terrain_and_Model/Collectibles/Health Pack/MedKit.fbx" id="13_vc86g"]
 [ext_resource type="ArrayMesh" uid="uid://2po0qc5pwana" path="res://Terrain_and_Model/Collectibles/Construction Material/concrete_slab_1.obj" id="14_myht2"]
 [ext_resource type="PackedScene" uid="uid://71bpwyefqnv6" path="res://Terrain_and_Model/Units/MarksmanModel/Marksman.fbx" id="15_q3tb1"]
@@ -102,10 +102,10 @@ script = ExtResource("1_djirp")
 zoom_speed = 0.5
 
 [node name="Camera3D" type="Camera3D" parent="RTScamera"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 59.6438, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 50, 0)
 projection = 1
-size = 54.333
-near = 0.001
+current = true
+size = 30.0
 
 [node name="HTerrain" type="Node3D" parent="."]
 script = ExtResource("2_m0t28")
@@ -140,7 +140,8 @@ shape = SubResource("CapsuleShape3D_whd2p")
 [node name="StaticBody3D_Money" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 0)
 
-[node name="Metal Crate" parent="StaticBody3D_Money" instance=ExtResource("12_qeeiw")]
+[node name="reinforced_crate_metallic_clasp_01" parent="StaticBody3D_Money" instance=ExtResource("12_qeeiw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 10)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Money"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
