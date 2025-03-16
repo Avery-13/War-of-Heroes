@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=42 format=3 uid="uid://4d4si8bfk7f7"]
 
 [ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
 [ext_resource type="PackedScene" uid="uid://bo53iqqlip5fa" path="res://Terrain_and_Model/Buildings/Iron Mine/IronMine.fbx" id="2_lepqq"]
@@ -18,6 +18,12 @@
 [ext_resource type="PackedScene" uid="uid://71bpwyefqnv6" path="res://Terrain_and_Model/Units/MarksmanModel/Marksman.fbx" id="15_q3tb1"]
 [ext_resource type="PackedScene" uid="uid://cy18nb0arb1s" path="res://Terrain_and_Model/Units/InfantryModel/Infantry.fbx" id="16_eg7ir"]
 [ext_resource type="PackedScene" uid="uid://xjwr2hufh1b1" path="res://Terrain_and_Model/Units/TankModel/Tank/Tank.fbx" id="17_efxle"]
+[ext_resource type="PackedScene" uid="uid://l8poy4lmopvs" path="res://Terrain_and_Model/Buildings/Gold Mine/GoldMine.fbx" id="19_f01x1"]
+[ext_resource type="ArrayMesh" uid="uid://bgubmbr0shdo7" path="res://Terrain_and_Model/Buildings/HQ Building/service_building_.obj" id="20_qlcw6"]
+[ext_resource type="Texture2D" uid="uid://8v8xmu785awg" path="res://Terrain_and_Model/Buildings/HQ Building/service_building_1_color_+_door.png" id="21_vynbn"]
+[ext_resource type="Texture2D" uid="uid://tmtqgo4s3j4p" path="res://Terrain_and_Model/Buildings/HQ Building/service_building_1_light.png" id="22_s46kj"]
+[ext_resource type="ArrayMesh" uid="uid://c7e385xya3rmk" path="res://Terrain_and_Model/Buildings/Turrent/Sci Fi AA Turret.obj" id="23_6axob"]
+[ext_resource type="Texture2D" uid="uid://b4yj4jkgj7xn3" path="res://Terrain_and_Model/Buildings/Turrent/Turret_Color.jpg" id="24_8syuh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbody"]
 albedo_color = Color(0.340829, 0.710834, 0.630338, 1)
@@ -57,9 +63,18 @@ textures = [[ExtResource("5_ijmai"), ExtResource("6_glfnf"), ExtResource("7_tnt8
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pskro"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n7i1w"]
+albedo_texture = ExtResource("21_vynbn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8skf"]
+albedo_texture = ExtResource("22_s46kj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lle50"]
+albedo_texture = ExtResource("24_8syuh")
+
 [node name="Node3D" type="Node3D"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D (Not needed anymore?)" type="MeshInstance3D" parent="."]
 transform = Transform3D(20.025, 0, 0, 0, 20.025, 0, 0, 0, 20.025, 0, 3, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_qbody")
@@ -212,8 +227,45 @@ shape = SubResource("BoxShape3D_pskro")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -13)
 
 [node name="IronMine" parent="StaticBody3D_IronMine" instance=ExtResource("2_lepqq")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.1, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_IronMine"]
 transform = Transform3D(6, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, -1)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="StaticBody3D_GoldMine" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 4, -13)
+
+[node name="GoldMine" parent="StaticBody3D_GoldMine" instance=ExtResource("19_f01x1")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_GoldMine"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0.5, 0, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="StaticBody3D_HQ" type="StaticBody3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -17, 2, 2)
+
+[node name="ServiceBuilding" type="MeshInstance3D" parent="StaticBody3D_HQ"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+mesh = ExtResource("20_qlcw6")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_n7i1w")
+surface_material_override/1 = SubResource("StandardMaterial3D_y8skf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_HQ"]
+transform = Transform3D(4, 0, 0, 0, 6, 0, 0, 0, 6, 1, 0, 1.1)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="StaticBody3D_Turrent" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 2, -3)
+
+[node name="SciFiAaTurret" type="MeshInstance3D" parent="StaticBody3D_Turrent"]
+transform = Transform3D(-0.005, 0, 7.54979e-10, 0, 0.005, 0, -7.54979e-10, 0, -0.005, 0, 0, 0)
+mesh = ExtResource("23_6axob")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_lle50")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Turrent"]
+transform = Transform3D(4, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
 shape = SubResource("BoxShape3D_pskro")

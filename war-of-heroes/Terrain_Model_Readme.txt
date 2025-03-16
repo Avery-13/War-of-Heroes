@@ -22,3 +22,5 @@ https://www.mixamo.com/#/?page=1&query=soldier&type=Motion%2CMotionPack
 For the Buildings:
 https://www.blendswap.com/blend/8309
 https://www.turbosquid.com/3d-models/free-blend-mode-mineral-magic/762508
+https://www.turbosquid.com/3d-models/3d-golden-gold/494809
+https://www.turbosquid.com/3d-models/sci-fi-buildings-3d-1432195
