@@ -102,7 +102,10 @@ script = ExtResource("1_djirp")
 zoom_speed = 0.5
 
 [node name="Camera3D" type="Camera3D" parent="RTScamera"]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 20, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 59.6438, 0)
+projection = 1
+size = 54.333
+near = 0.001
 
 [node name="HTerrain" type="Node3D" parent="."]
 script = ExtResource("2_m0t28")
