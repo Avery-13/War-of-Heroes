@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dvsmo30nqxfuf"
+path="res://.godot/imported/window-wide-type-c.obj-2be68e69628a7b8c5cff0c5507e58109.mesh"
+
+[deps]
+
+files=["res://.godot/imported/window-wide-type-c.obj-2be68e69628a7b8c5cff0c5507e58109.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/window-wide-type-c.obj"
+dest_files=["res://.godot/imported/window-wide-type-c.obj-2be68e69628a7b8c5cff0c5507e58109.mesh", "res://.godot/imported/window-wide-type-c.obj-2be68e69628a7b8c5cff0c5507e58109.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bxjsh2ybtqxee"
+path="res://.godot/imported/road-dirt-damaged.obj-3d5ed7817fbe12ee0c53b24c9b08eccc.mesh"
+
+[deps]
+
+files=["res://.godot/imported/road-dirt-damaged.obj-3d5ed7817fbe12ee0c53b24c9b08eccc.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/road-dirt-damaged.obj"
+dest_files=["res://.godot/imported/road-dirt-damaged.obj-3d5ed7817fbe12ee0c53b24c9b08eccc.mesh", "res://.godot/imported/road-dirt-damaged.obj-3d5ed7817fbe12ee0c53b24c9b08eccc.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

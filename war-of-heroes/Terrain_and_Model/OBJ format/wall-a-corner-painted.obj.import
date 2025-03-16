@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bkgoqnool72qu"
+path="res://.godot/imported/wall-a-corner-painted.obj-b0ac42a9d2fa7396f41dd8be21f2bb93.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wall-a-corner-painted.obj-b0ac42a9d2fa7396f41dd8be21f2bb93.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/wall-a-corner-painted.obj"
+dest_files=["res://.godot/imported/wall-a-corner-painted.obj-b0ac42a9d2fa7396f41dd8be21f2bb93.mesh", "res://.godot/imported/wall-a-corner-painted.obj-b0ac42a9d2fa7396f41dd8be21f2bb93.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

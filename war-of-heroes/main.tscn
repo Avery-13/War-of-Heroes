@@ -1,6 +1,22 @@
-[gd_scene load_steps=11 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=32 format=3 uid="uid://4d4si8bfk7f7"]
 
 [ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="2_m0t28"]
+[ext_resource type="Resource" path="res://Terrain_and_Model/HeightTerrain/data.hterrain" id="3_r3leg"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="4_pgv6g"]
+[ext_resource type="Texture2D" uid="uid://d3b8ygr410iiy" path="res://Terrain_and_Model/TerrainTextures/Grasss/Ground037_1K-JPG_Color.jpg" id="5_ijmai"]
+[ext_resource type="Texture2D" uid="uid://droveij4oq06y" path="res://Terrain_and_Model/TerrainTextures/Cliff/Rock028_1K-JPG_Color.jpg" id="6_glfnf"]
+[ext_resource type="Texture2D" uid="uid://bqq6qfodadl6q" path="res://Terrain_and_Model/TerrainTextures/Gravel/Rocks006_1K-JPG_Color.jpg" id="7_tnt8i"]
+[ext_resource type="Texture2D" uid="uid://8qjo8hiknhug" path="res://Terrain_and_Model/TerrainTextures/Grasss/Ground037_1K-JPG_NormalDX.jpg" id="8_vysi8"]
+[ext_resource type="Texture2D" uid="uid://de1la5doit8ee" path="res://Terrain_and_Model/TerrainTextures/Cliff/Rock028_1K-JPG_NormalDX.jpg" id="9_hpcle"]
+[ext_resource type="Texture2D" uid="uid://c4irfajmyouhg" path="res://Terrain_and_Model/TerrainTextures/Gravel/Rocks006_1K-JPG_NormalDX.jpg" id="10_pjrsp"]
+[ext_resource type="Script" path="res://Terrain_and_Model/character_body_3d.gd" id="11_wgywa"]
+[ext_resource type="PackedScene" uid="uid://bdrvd0khp0oj1" path="res://Terrain_and_Model/Collectibles/Money Resource/reinforced_crate_metallic_clasp_01.FBX" id="12_qeeiw"]
+[ext_resource type="PackedScene" uid="uid://bv12g7tj0vsl6" path="res://Terrain_and_Model/Collectibles/Health Pack/MedKit.fbx" id="13_vc86g"]
+[ext_resource type="ArrayMesh" uid="uid://2po0qc5pwana" path="res://Terrain_and_Model/Collectibles/Construction Material/concrete_slab_1.obj" id="14_myht2"]
+[ext_resource type="PackedScene" uid="uid://71bpwyefqnv6" path="res://Terrain_and_Model/Units/MarksmanModel/Marksman.fbx" id="15_q3tb1"]
+[ext_resource type="PackedScene" uid="uid://cy18nb0arb1s" path="res://Terrain_and_Model/Units/InfantryModel/Infantry.fbx" id="16_eg7ir"]
+[ext_resource type="PackedScene" uid="uid://xjwr2hufh1b1" path="res://Terrain_and_Model/Units/TankModel/Tank/Tank.fbx" id="17_efxle"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbody"]
 albedo_color = Color(0.340829, 0.710834, 0.630338, 1)
@@ -27,27 +43,41 @@ albedo_color = Color(0.743844, 0.404154, 0.2554, 1)
 [sub_resource type="CylinderMesh" id="CylinderMesh_amjdk"]
 material = SubResource("StandardMaterial3D_lvnvh")
 
+[sub_resource type="Resource" id="Resource_al8hm"]
+script = ExtResource("4_pgv6g")
+mode = 0
+textures = [[ExtResource("5_ijmai"), ExtResource("6_glfnf"), ExtResource("7_tnt8i"), ExtResource("7_tnt8i")], [ExtResource("8_vysi8"), ExtResource("9_hpcle"), ExtResource("10_pjrsp"), ExtResource("10_pjrsp")]]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_1di1b"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_whd2p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k6drd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pskro"]
+
 [node name="Node3D" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(20.025, 0, 0, 0, 20.025, 0, 0, 0, 20.025, 0, 0, 0)
+transform = Transform3D(20.025, 0, 0, 0, 20.025, 0, 0, 0, 20.025, 0, 3, 0)
+visible = false
 material_override = SubResource("StandardMaterial3D_qbody")
 mesh = SubResource("PlaneMesh_hlvv7")
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6456, 0.928138, -16.2254)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6456, 3, -16.2254)
 mesh = SubResource("BoxMesh_22jun")
 skeleton = NodePath("../MeshInstance3D2")
 surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6847, 1.39221, 10.0827)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6847, 3, 10.0827)
 mesh = SubResource("BoxMesh_22jun")
 skeleton = NodePath("../MeshInstance3D6")
 surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0390997, 0.464069, -8.11271)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0390997, 3, -8.11271)
 mesh = SubResource("BoxMesh_22jun")
 surface_material_override/0 = SubResource("StandardMaterial3D_japjj")
 
@@ -59,12 +89,12 @@ shadow_enabled = true
 environment = SubResource("Environment_eqyb1")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.39904, 0.804071, 0.0524025)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.39904, 3, 0.0524025)
 mesh = SubResource("CylinderMesh_amjdk")
 skeleton = NodePath("../MeshInstance3D3")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.30783, 1.11208, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.30783, 3, 0)
 mesh = SubResource("CylinderMesh_amjdk")
 
 [node name="RTScamera" type="Node3D" parent="."]
@@ -73,3 +103,102 @@ zoom_speed = 0.5
 
 [node name="Camera3D" type="Camera3D" parent="RTScamera"]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 20, 0)
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("2_m0t28")
+centered = true
+_terrain_data = ExtResource("3_r3leg")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_al8hm")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = true
+shader_params/u_tile_reduction = null
+
+[node name="Test" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+script = ExtResource("11_wgywa")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Test"]
+mesh = SubResource("CapsuleMesh_1di1b")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Test"]
+shape = SubResource("CapsuleShape3D_whd2p")
+
+[node name="StaticBody3D_Money" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 0)
+
+[node name="Metal Crate" parent="StaticBody3D_Money" instance=ExtResource("12_qeeiw")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Money"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_k6drd")
+
+[node name="StaticBody3D_Health" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
+
+[node name="MedKit" parent="StaticBody3D_Health" instance=ExtResource("13_vc86g")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Health"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_k6drd")
+
+[node name="StaticBody3D_Construction" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99, 5)
+
+[node name="ConcreteSlab1" type="MeshInstance3D" parent="StaticBody3D_Construction"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+mesh = ExtResource("14_myht2")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Construction"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("BoxShape3D_k6drd")
+
+[node name="StaticBody3D_Construction2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99, 5)
+
+[node name="ConcreteSlab1" type="MeshInstance3D" parent="StaticBody3D_Construction2"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+mesh = ExtResource("14_myht2")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Construction2"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="StaticBody3D_Marksman" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 0)
+
+[node name="Marksman" parent="StaticBody3D_Marksman" instance=ExtResource("15_q3tb1")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Marksman"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="StaticBody3D_Infantry" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 2, 0)
+
+[node name="Infantry" parent="StaticBody3D_Infantry" instance=ExtResource("16_eg7ir")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Infantry"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")
+
+[node name="StaticBody3D_Tank" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 2, 0)
+
+[node name="Tank" parent="StaticBody3D_Tank" instance=ExtResource("17_efxle")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Tank"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 6, 0, 1, 0)
+shape = SubResource("BoxShape3D_pskro")

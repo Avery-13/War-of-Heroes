@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cm60gy2cg1gy3"
+path="res://.godot/imported/wall-b-flat-window.obj-3804b6c9b7237b0bed157d670c3bf9ac.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wall-b-flat-window.obj-3804b6c9b7237b0bed157d670c3bf9ac.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/wall-b-flat-window.obj"
+dest_files=["res://.godot/imported/wall-b-flat-window.obj-3804b6c9b7237b0bed157d670c3bf9ac.mesh", "res://.godot/imported/wall-b-flat-window.obj-3804b6c9b7237b0bed157d670c3bf9ac.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bvqte58u2g35"
+path="res://.godot/imported/road-dirt-tile.obj-03428bdbdff46aff2747a0634775f15b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/road-dirt-tile.obj-03428bdbdff46aff2747a0634775f15b.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/road-dirt-tile.obj"
+dest_files=["res://.godot/imported/road-dirt-tile.obj-03428bdbdff46aff2747a0634775f15b.mesh", "res://.godot/imported/road-dirt-tile.obj-03428bdbdff46aff2747a0634775f15b.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

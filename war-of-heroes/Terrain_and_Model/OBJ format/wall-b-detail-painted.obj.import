@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://2ay5k6kdn5c8"
+path="res://.godot/imported/wall-b-detail-painted.obj-4c2d5053fb4d193003497426f2269455.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wall-b-detail-painted.obj-4c2d5053fb4d193003497426f2269455.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/wall-b-detail-painted.obj"
+dest_files=["res://.godot/imported/wall-b-detail-painted.obj-4c2d5053fb4d193003497426f2269455.mesh", "res://.godot/imported/wall-b-detail-painted.obj-4c2d5053fb4d193003497426f2269455.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

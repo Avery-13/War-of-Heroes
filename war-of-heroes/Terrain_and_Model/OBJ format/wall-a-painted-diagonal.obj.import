@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b7hq8v03blneo"
+path="res://.godot/imported/wall-a-painted-diagonal.obj-e4dfc85d8e87193c62e4253834ab3391.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wall-a-painted-diagonal.obj-e4dfc85d8e87193c62e4253834ab3391.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/wall-a-painted-diagonal.obj"
+dest_files=["res://.godot/imported/wall-a-painted-diagonal.obj-e4dfc85d8e87193c62e4253834ab3391.mesh", "res://.godot/imported/wall-a-painted-diagonal.obj-e4dfc85d8e87193c62e4253834ab3391.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://58c2vgqykjbn"
+path="res://.godot/imported/road-dirt-center.obj-21fe57acd39d4f2cc5ada2187c893211.mesh"
+
+[deps]
+
+files=["res://.godot/imported/road-dirt-center.obj-21fe57acd39d4f2cc5ada2187c893211.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/road-dirt-center.obj"
+dest_files=["res://.godot/imported/road-dirt-center.obj-21fe57acd39d4f2cc5ada2187c893211.mesh", "res://.godot/imported/road-dirt-center.obj-21fe57acd39d4f2cc5ada2187c893211.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

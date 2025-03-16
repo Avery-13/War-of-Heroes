@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ck2cj5otmm0n1"
+path="res://.godot/imported/detail-light-single.obj-a0af03f78e9074197f8c41d6c9f4acfb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/detail-light-single.obj-a0af03f78e9074197f8c41d6c9f4acfb.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/detail-light-single.obj"
+dest_files=["res://.godot/imported/detail-light-single.obj-a0af03f78e9074197f8c41d6c9f4acfb.mesh", "res://.godot/imported/detail-light-single.obj-a0af03f78e9074197f8c41d6c9f4acfb.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

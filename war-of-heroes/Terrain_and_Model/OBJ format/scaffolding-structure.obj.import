@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://4n18amxomvn1"
+path="res://.godot/imported/scaffolding-structure.obj-f1f334af823086df93b2dca6028539af.mesh"
+
+[deps]
+
+files=["res://.godot/imported/scaffolding-structure.obj-f1f334af823086df93b2dca6028539af.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/scaffolding-structure.obj"
+dest_files=["res://.godot/imported/scaffolding-structure.obj-f1f334af823086df93b2dca6028539af.mesh", "res://.godot/imported/scaffolding-structure.obj-f1f334af823086df93b2dca6028539af.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

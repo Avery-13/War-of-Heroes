@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dl6b178s24adt"
+path="res://.godot/imported/detail-cables-type-b.obj-ac7e4813c9ca250b3e8be22cf468176d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/detail-cables-type-b.obj-ac7e4813c9ca250b3e8be22cf468176d.mesh"]
+
+source_file="res://Terrain_and_Model/OBJ format/detail-cables-type-b.obj"
+dest_files=["res://.godot/imported/detail-cables-type-b.obj-ac7e4813c9ca250b3e8be22cf468176d.mesh", "res://.godot/imported/detail-cables-type-b.obj-ac7e4813c9ca250b3e8be22cf468176d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
