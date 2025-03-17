@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=54 format=3 uid="uid://4d4si8bfk7f7"]
 
 [ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
 [ext_resource type="Script" path="res://Terrain_and_Model/InputHandler.gd" id="1_r85s5"]
@@ -14,8 +14,11 @@
 [ext_resource type="Texture2D" uid="uid://c4irfajmyouhg" path="res://Terrain_and_Model/TerrainTextures/Gravel/Rocks006_1K-JPG_NormalDX.jpg" id="10_pjrsp"]
 [ext_resource type="Script" path="res://Terrain_and_Model/character_body_3d.gd" id="11_wgywa"]
 [ext_resource type="PackedScene" uid="uid://bv12g7tj0vsl6" path="res://Terrain_and_Model/Collectibles/Health Pack/MedKit.fbx" id="13_vc86g"]
+[ext_resource type="ArrayMesh" uid="uid://bqsl31vma3vc0" path="res://Terrain_and_Model/Buildings/Route/Rail.obj" id="14_2hmby"]
 [ext_resource type="ArrayMesh" uid="uid://2po0qc5pwana" path="res://Terrain_and_Model/Collectibles/Construction Material/concrete_slab_1.obj" id="14_myht2"]
 [ext_resource type="PackedScene" uid="uid://71bpwyefqnv6" path="res://Terrain_and_Model/Units/MarksmanModel/Marksman.fbx" id="15_q3tb1"]
+[ext_resource type="PackedScene" uid="uid://tqdjnmpau1yi" path="res://Terrain_and_Model/Collectibles/Money Resource/reinforced_crate_metallic_clasp_01.FBX" id="15_rt8k1"]
+[ext_resource type="ArrayMesh" uid="uid://dxex04xlccn5w" path="res://Terrain_and_Model/Buildings/Route/MineCart.obj" id="15_xywgl"]
 [ext_resource type="PackedScene" uid="uid://cy18nb0arb1s" path="res://Terrain_and_Model/Units/InfantryModel/Infantry.fbx" id="16_eg7ir"]
 [ext_resource type="PackedScene" uid="uid://xjwr2hufh1b1" path="res://Terrain_and_Model/Units/TankModel/Tank/Tank.fbx" id="17_efxle"]
 [ext_resource type="PackedScene" uid="uid://l8poy4lmopvs" path="res://Terrain_and_Model/Buildings/Gold Mine/GoldMine.fbx" id="19_f01x1"]
@@ -188,6 +191,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_k6drd")
 
+[node name="StaticBody3D_Route" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 10)
+
+[node name="Rail" type="MeshInstance3D" parent="StaticBody3D_Route"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+mesh = ExtResource("14_2hmby")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Route"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.335, 0)
+shape = SubResource("BoxShape3D_k6drd")
+
+[node name="CharacterBody3D_MineCart" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, 10)
+
+[node name="MineCart" type="MeshInstance3D" parent="CharacterBody3D_MineCart"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0)
+mesh = ExtResource("15_xywgl")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D_MineCart"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_k6drd")
+
 [node name="StaticBody3D_Construction" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99, 5)
 
@@ -198,6 +225,14 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_Construction"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("BoxShape3D_k6drd")
+
+[node name="StaticBody3D_MoneyCrate" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.99, 5)
+
+[node name="reinforced_crate_metallic_clasp_01" parent="StaticBody3D_MoneyCrate" instance=ExtResource("15_rt8k1")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D_MoneyCrate"]
 shape = SubResource("BoxShape3D_k6drd")
 
 [node name="StaticBody3D_IronMine" type="StaticBody3D" parent="."]
