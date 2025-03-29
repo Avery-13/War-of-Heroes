@@ -3,9 +3,11 @@ extends CharacterBody3D
 var speed: float = 5.0
 var target_position: Vector3 = Vector3.ZERO
 var is_selected: bool = false
-var attack_range: float = 5.0  # Range within which the unit can attack
+var attack_range: float = 6.0  # Range within which the unit can attack
 
 @onready var selection_indicator = $SelectionIndicator  # Reference to the selection indicator
+var target_factory: Node3D = null  # Reference to the target factory
+var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
 
 func select() -> void:
 	is_selected = true
@@ -19,10 +21,20 @@ func move_to(new_target_position: Vector3) -> void:
 	target_position = new_target_position
 
 func attack(enemy: Node3D) -> void:
-	target_position = enemy.global_transform.origin  # Move toward the enemy
-	# Check if the enemy is within attack range
-	if global_transform.origin.distance_to(enemy.global_transform.origin) <= attack_range:
-		destroy_enemy(enemy)
+	# Workers can't attack
+	if is_in_group("Ally_Worker"):
+		print("Workers cannot attack!")
+		return
+	
+	if enemy.is_in_group("Enemy_Factory"):
+		# Special case for enemy factories
+		target_enemy_factory = enemy
+		move_to(enemy.global_transform.origin)
+	else:
+		# Normal attack behavior
+		target_position = enemy.global_transform.origin
+		if global_transform.origin.distance_to(enemy.global_transform.origin) <= attack_range:
+			destroy_enemy(enemy)
 
 func destroy_enemy(enemy: Node3D) -> void:
 	enemy.queue_free()  # Destroy the enemy
@@ -31,16 +43,38 @@ func destroy_enemy(enemy: Node3D) -> void:
 func return_selected():
 	return is_selected
 
+func convert_factory(factory: Node3D) -> void:
+	if is_in_group("Ally_Worker") and is_selected:
+		target_factory = factory
+		move_to(factory.global_transform.origin)  # Move to factory first
+
 func _physics_process(delta: float) -> void:
 	if target_position != Vector3.ZERO:
 		var direction = (target_position - global_transform.origin).normalized()
 		velocity = direction * speed
-
-		# Rotate the unit to face the movement direction
+		
 		look_at(global_transform.origin - direction, Vector3.UP)
-
 		move_and_slide()
-
-		# Stop moving if close to the target
-		if global_transform.origin.distance_to(target_position) < 0.5:
+		
+		# Check if reached target factory
+		if target_factory and global_transform.origin.distance_to(target_position) < 3.0:
+			if global_transform.origin.distance_to(target_factory.global_transform.origin) <= 3.0:
+				_complete_conversion()
 			target_position = Vector3.ZERO
+		
+		if is_instance_valid(target_enemy_factory):
+			if global_transform.origin.distance_to(target_position) < 1.5:
+				if global_transform.origin.distance_to(target_enemy_factory.global_transform.origin) <= attack_range:
+					_convert_enemy_factory()
+				target_position = Vector3.ZERO
+
+func _complete_conversion():
+	if is_instance_valid(target_factory) and target_factory.has_method("capture"):
+		target_factory.capture()
+	queue_free()  # Remove the worker after conversion
+	target_factory = null  # Clear the reference
+
+func _convert_enemy_factory():
+	if target_enemy_factory and target_enemy_factory.has_method("convert_to_ally"):
+		target_enemy_factory.convert_to_ally()
+	target_enemy_factory = null

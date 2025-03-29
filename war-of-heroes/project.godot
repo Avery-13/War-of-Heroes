@@ -15,6 +15,11 @@ run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameResources="*res://Terrain_and_Model/GameResources.gd"
+InputHandler="*res://Terrain_and_Model/InputHandler.gd"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/zylann.hterrain/plugin.cfg")
