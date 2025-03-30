@@ -1,3 +1,4 @@
 *.fbx filter=lfs diff=lfs merge=lfs -text
 .blend filter=lfs diff=lfs merge=lfs -text
 /war-of-heroes/Terrain_and_Model/Units/InfantryModel/Infantry.blend filter=lfs diff=lfs merge=lfs -text
+/war-of-heroes/Terrain_and_Model/Units/InfantryModel/Infantry_Model.glb filter=lfs diff=lfs merge=lfs -text
