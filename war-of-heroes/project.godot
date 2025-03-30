@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameResources="*res://Terrain_and_Model/GameResources.gd"
 InputHandler="*res://Terrain_and_Model/InputHandler.gd"
+GameManager="*res://GameManager.gd"
 
 [editor_plugins]
 
