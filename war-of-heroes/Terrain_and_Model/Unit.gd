@@ -9,6 +9,9 @@ var attack_range: float = 6.0  # Range within which the unit can attack
 var target_factory: Node3D = null  # Reference to the target factory
 var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
 
+@onready var animation_tree : AnimationTree = get_node("/root/Node3D/AnimationTree") #reference to the animation tree
+@onready var animation_player : AnimationPlayer = get_node("/root/Node3D/AnimationUnit") #reference to the animation player
+
 func select() -> void:
 	is_selected = true
 	selection_indicator.visible = true  # Show the selection indicator
@@ -34,6 +37,7 @@ func attack(enemy: Node3D) -> void:
 		# Normal attack behavior
 		target_position = enemy.global_transform.origin
 		if global_transform.origin.distance_to(enemy.global_transform.origin) <= attack_range:
+			update_animation_parameters("fire") # play fire animation
 			destroy_enemy(enemy)
 
 func destroy_enemy(enemy: Node3D) -> void:
@@ -52,7 +56,7 @@ func _physics_process(delta: float) -> void:
 	if target_position != Vector3.ZERO:
 		var direction = (target_position - global_transform.origin).normalized()
 		velocity = direction * speed
-		
+		update_animation_parameters("move") # play move animation
 		look_at(global_transform.origin - direction, Vector3.UP)
 		move_and_slide()
 		
@@ -78,3 +82,34 @@ func _convert_enemy_factory():
 	if target_enemy_factory and target_enemy_factory.has_method("convert_to_ally"):
 		target_enemy_factory.convert_to_ally()
 	target_enemy_factory = null
+
+
+func update_animation_parameters(action: String):
+	# idle 
+	if (action == "move"):
+		if (velocity == Vector3.ZERO):
+			#print("idle")
+			animation_tree["parameters/conditions/is_idle"] = true
+			animation_tree["parameters/conditions/is_moving"] = false
+			animation_player.get_animation("Running_With_Gun").loop_mode = Animation.LOOP_NONE
+			animation_player.get_animation("Idle_Gun_Aiming").loop_mode = Animation.LOOP_LINEAR
+		# moving 
+		else:
+			#print("Moving")
+			animation_tree["parameters/conditions/is_idle"] = false
+			animation_tree["parameters/conditions/is_moving"] = true
+			animation_player.get_animation("Idle_Gun_Aiming").loop_mode = Animation.LOOP_NONE
+			animation_player.get_animation("Running_With_Gun").loop_mode = Animation.LOOP_LINEAR		
+	# fire
+	elif (action == "fire"):
+		print("fire")
+		animation_tree["parameters/conditions/is_moving"] = false
+		animation_player.get_animation("Running_With_Gun").loop_mode = Animation.LOOP_NONE
+		animation_tree["parameters/conditions/is_firing"] = true
+		animation_tree["parameters/conditions/stop_fire"] = true
+		animation_tree["parameters/conditions/is_firing"] = false
+		animation_tree["parameters/conditions/stop_fire"] = false
+		animation_tree["parameters/conditions/is_idle"] = true
+	# default
+	else:
+		animation_tree["parameters/conditions/is_idle"] = true
