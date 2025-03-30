@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://4d4si8bfk7f7"]
+[gd_scene load_steps=58 format=3 uid="uid://4d4si8bfk7f7"]
 
 [ext_resource type="Script" path="res://rt_scamera.gd" id="1_djirp"]
 [ext_resource type="Script" path="res://Terrain_and_Model/InputHandler.gd" id="1_r85s5"]
@@ -95,6 +95,9 @@ albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j06j0"]
 albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yq5e1"]
+bg_color = Color(0.286384, 0.406068, 0.459039, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c8swu"]
 bg_color = Color(0, 0, 0, 0.00392157)
@@ -394,6 +397,39 @@ transform = Transform3D(3.34, 0, 0, 0, 0.01, 0, 0, 0, 3.34, 0, 0, -1.09128)
 mesh = SubResource("CylinderMesh_yoq0l")
 skeleton = NodePath("../SelectionIndicator")
 surface_material_override/0 = SubResource("StandardMaterial3D_r4tom")
+
+[node name="ActionsUI" type="CanvasLayer" parent="."]
+
+[node name="ActionsPanel" type="Panel" parent="ActionsUI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -118.0
+offset_top = -148.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yq5e1")
+metadata/_edit_use_anchors_ = true
+
+[node name="Actions" type="Label" parent="ActionsUI/ActionsPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Actions"
+
+[node name="ActionList" type="VBoxContainer" parent="ActionsUI/ActionsPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.162
+anchor_right = 0.975
+anchor_bottom = 1.0
+offset_top = 0.0240002
+offset_right = 2.95
+offset_bottom = -1.0
 
 [node name="ResourceUI" type="CanvasLayer" parent="."]
 script = ExtResource("32_wcbsu")
