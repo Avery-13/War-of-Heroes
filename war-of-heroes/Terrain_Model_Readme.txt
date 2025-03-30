@@ -24,4 +24,8 @@ Assets:
 	https://www.turbosquid.com/3d-models/sci-fi-buildings-3d-1432195
 	https://www.turbosquid.com/3d-models/minecart-rails-c4d-free/728054
 
-a
+	For the Animations
+	https://www.mixamo.com/#/?page=1&query=soldier&type=Motion%2CMotionPack
+	https://www.youtube.com/watch?v=WrMORzl3g1U
+	https://www.youtube.com/watch?v=WXw73tBd1PM
+	https://www.youtube.com/watch?v=59vKbXKuaNI
