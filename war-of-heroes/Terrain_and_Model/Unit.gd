@@ -8,9 +8,8 @@ var attack_range: float = 6.0  # Range within which the unit can attack
 @onready var selection_indicator = $SelectionIndicator  # Reference to the selection indicator
 var target_factory: Node3D = null  # Reference to the target factory
 var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
-
-@onready var animation_tree : AnimationTree = get_node("/root/Node3D/AnimationTree") #reference to the animation tree
-@onready var animation_player : AnimationPlayer = get_node("/root/Node3D/AnimationUnit") #reference to the animation player
+@onready var animation_tree : AnimationTree = $AnimationTree
+@onready var animation_player : AnimationPlayer = $AnimationUnit
 
 func select() -> void:
 	is_selected = true
@@ -85,6 +84,7 @@ func _convert_enemy_factory():
 
 
 func update_animation_parameters(action: String):
+
 	# idle 
 	if (action == "move"):
 		if (velocity == Vector3.ZERO):
