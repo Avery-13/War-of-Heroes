@@ -2,6 +2,8 @@ extends Node3D
 
 var camera: Camera3D
 @onready var actions_panel: Node = get_node("/root/Node3D/ActionsUI/ActionsPanel")
+@onready var purchase_menu: Node = get_node("/root/Node3D/ActionsUI/PurchaseMenu")
+
 var selected_unit: Node3D = null:
 	set(value):
 		# Clear previous selection
@@ -39,6 +41,9 @@ func _input(event: InputEvent) -> void:
 			handle_left_click(event.position)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			handle_right_click()
+			
+	if Input.is_action_just_pressed("toggle_purchase_menu"):
+		purchase_menu.visible = !purchase_menu.visible
 
 func handle_left_click(mouse_position: Vector2) -> void:
 	if !is_instance_valid(camera):
