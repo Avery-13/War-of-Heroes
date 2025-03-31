@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-var speed: float = 5.0
+var speed: float = 25.0
 var target_position: Vector3 = Vector3.ZERO
 var is_selected: bool = false
 var attack_range: float = 6.0  # Range within which the unit can attack
@@ -69,7 +69,7 @@ func _ready():
 func actor_setup():
 	# Wait for the first physics frame so the NavigationServer can sync.
 	await get_tree().physics_frame
-	var hq_building_pos = get_node("/root/Node3D/StaticBody3D_HQ")
+	var hq_building_pos = get_node("/root/Node3D/StaticBody3D_HQ_Player")
 
 	# Now that the navigation map is no longer empty, set the movement target.
 	set_movement_target(hq_building_pos.position)
