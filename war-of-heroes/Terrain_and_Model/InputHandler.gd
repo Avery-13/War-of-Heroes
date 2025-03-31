@@ -1,6 +1,7 @@
 extends Node3D
 
 var camera: Camera3D
+@onready var actions_panel: Node = get_node("/root/Node3D/ActionsUI/ActionsPanel")
 var selected_unit: Node3D = null:
 	set(value):
 		# Clear previous selection
@@ -128,6 +129,10 @@ func select_unit(unit: Node3D) -> void:
 	
 	selected_unit = unit
 	selected_unit.select()
+	
+		# Show actions in the ActionsPanel
+	if "actions" in unit:
+		actions_panel.show_actions(unit.actions)
 
 func select_building(building: Node3D) -> void:
 	# Deselect current selections

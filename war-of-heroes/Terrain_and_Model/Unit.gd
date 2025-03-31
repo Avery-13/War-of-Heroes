@@ -4,12 +4,30 @@ var speed: float = 5.0
 var target_position: Vector3 = Vector3.ZERO
 var is_selected: bool = false
 var attack_range: float = 6.0  # Range within which the unit can attack
+var actions: Array[String] = []
 
 @onready var selection_indicator = $SelectionIndicator  # Reference to the selection indicator
 var target_factory: Node3D = null  # Reference to the target factory
 var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
 @onready var animation_tree : AnimationTree = $AnimationTree
 @onready var animation_player : AnimationPlayer = $AnimationUnit
+
+func _ready():
+	# Worker units can move and convert factories
+	if is_in_group("Ally_Worker"):
+		actions = ["Move", "Convert"]
+
+	# Combat units
+	elif is_in_group("Ally_Units"):
+		actions = ["Move", "Attack Nearest", "Guard", "Rest"]
+
+	# HQs 
+	elif is_in_group("Ally_HQ"):
+		actions = ["Create Unit", "Build Structure"]  # Add more when implemented
+
+	# Enemy units 
+	elif is_in_group("Enemy_Units"):
+		actions = ["Attack"]  # Enemies aren't controlled by player
 
 func select() -> void:
 	is_selected = true
