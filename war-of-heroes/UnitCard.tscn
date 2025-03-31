@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5v3lsxo7vq55"]
+
+[ext_resource type="Script" path="res://unit_card.gd" id="1_33y68"]
+
+[sub_resource type="Theme" id="Theme_e1ei4"]
+
+[node name="UnitCard" type="VBoxContainer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -121.0
+offset_right = 121.0
+offset_bottom = 114.0
+grow_horizontal = 2
+theme = SubResource("Theme_e1ei4")
+alignment = 1
+script = ExtResource("1_33y68")
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="CostLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="."]
+layout_mode = 2
+text = "Buy"
