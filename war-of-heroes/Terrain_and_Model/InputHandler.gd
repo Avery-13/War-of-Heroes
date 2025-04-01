@@ -4,6 +4,8 @@ var camera: Camera3D
 @onready var actions_panel: Node = get_node("/root/Node3D/ActionsUI/ActionsPanel")
 @onready var purchase_menu: Node = get_node("/root/Node3D/ActionsUI/PurchaseMenu")
 
+var spawn_position: Vector3 = Vector3.ZERO  # Default spawn position
+
 var selected_unit: Node3D = null:
 	set(value):
 		# Clear previous selection
@@ -144,6 +146,7 @@ func select_building(building: Node3D) -> void:
 	deselect_current()
 	
 	selected_building = building
+	set_spawn_position(building.global_transform.origin)
 	#selected_building.select()
 
 func deselect_current() -> void:
@@ -170,3 +173,6 @@ func handle_unit_command(position: Vector3, clicked_object: Node3D):
 	
 	# Default movement
 	selected_unit.move_to(position)
+
+func set_spawn_position(position: Vector3):
+	spawn_position = position

@@ -10,11 +10,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func setup(unit_name: String, cost: int, icon: Texture2D):
-	var unit_type: String = unit_name
+func setup(unit_name: String, cost_iron: int, icon: Texture2D, cost_gold: int = 5):
 	$NameLabel.text = unit_name
-	$CostLabel.text = "Iron: %d" % cost
+	$CostLabel.text = "Iron: %d\nGold: %d" % [cost_iron, cost_gold]
 	$Icon.texture = icon
 	$BuyButton.pressed.connect(func():
-		print("Buy pressed for: ", unit_type)
+		print("Buy pressed for: ", unit_name)
 	)

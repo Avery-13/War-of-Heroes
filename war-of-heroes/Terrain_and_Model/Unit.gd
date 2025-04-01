@@ -6,6 +6,8 @@ var is_selected: bool = false
 var attack_range: float = 6.0  # Range within which the unit can attack
 var actions: Array[String] = []
 
+const STOPPING_DISTANCE: float = 0.5  # Distance to stop before the target position
+
 @onready var selection_indicator = $SelectionIndicator  # Reference to the selection indicator
 var target_factory: Node3D = null  # Reference to the target factory
 var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
@@ -71,15 +73,23 @@ func convert_factory(factory: Node3D) -> void:
 
 func _physics_process(delta: float) -> void:
 	if target_position != Vector3.ZERO:
-		var direction = (target_position - global_transform.origin).normalized()
-		velocity = direction * speed
-		update_animation_parameters("move") # play move animation
-		var look_pos = global_position - direction 
-		look_pos.y = global_position.y  # Keep the y-coordinate the same
-		look_at(look_pos , Vector3.UP)  # Look at the target position
-		# look_at(global_transform.origin - direction, Vector3.UP)
-		move_and_slide()
+		var distance_to_target = global_transform.origin.distance_to(target_position)
+
+		if distance_to_target > STOPPING_DISTANCE:	
+			var direction = (target_position - global_transform.origin).normalized()
+			velocity = direction * speed
+			update_animation_parameters("move") # play move animation
+			var look_pos = global_position - direction 
+			look_pos.y = global_position.y  # Keep the y-coordinate the same
+			look_at(look_pos , Vector3.UP)  # Look at the target position
+			# look_at(global_transform.origin - direction, Vector3.UP)
+			move_and_slide()
 		
+		else:
+			# Stop moving when close to the target
+			velocity = Vector3.ZERO
+			target_position = Vector3.ZERO
+			update_animation_parameters("idle") # play idle animation
 		# Check if reached target factory
 		if target_factory and global_transform.origin.distance_to(target_position) < 3.0:
 			if global_transform.origin.distance_to(target_factory.global_transform.origin) <= 3.0:
