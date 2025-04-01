@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cx4kvmaskbd3r"
-valid=false
+path="res://.godot/imported/Infantry.blend-798b148ac2d2f3fbb3f64cddd0c434fb.scn"
 
 [deps]
 
 source_file="res://Terrain_and_Model/Units/InfantryModel/Infantry.blend"
+dest_files=["res://.godot/imported/Infantry.blend-798b148ac2d2f3fbb3f64cddd0c434fb.scn"]
 
 [params]
 
