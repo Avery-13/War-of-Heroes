@@ -2,11 +2,19 @@ extends Node3D
 
 @onready var capture_indicator: MeshInstance3D = null
 var is_captured: bool = false
+var factory_type: String = "Iron" # Default factory type
 
 func _ready():
+
+	#Detect factory type from name
+	if "Gold" in name:
+		factory_type = "Gold"
+	elif "Iron" in name:
+		factory_type = "Iron"
+
 	# Initialize capture state
 	if is_in_group("Ally_Factory"):
-		GameResources.active_factories += 1
+		GameResources.active_factories[factory_type] += 1
 		_set_captured(true)
 	else:
 		_set_captured(false)
@@ -17,10 +25,11 @@ func capture():
 	if is_in_group("Empty_Factory"):
 		remove_from_group("Empty_Factory")
 		add_to_group("Ally_Factory")
-		GameResources.active_factories += 1
+		GameResources.active_factories[factory_type] += 1
+		print (GameResources.active_factories)  # Debug message
 		convert_to_ally()
 		_set_captured(true)
-		print("Factory captured by allies!")  # Debug message
+		print("The following factory has been captured: ", factory_type)  # Debug message
 
 func _set_captured(captured: bool):
 	is_captured = captured
@@ -51,6 +60,7 @@ func _create_capture_indicator():
 	capture_indicator.mesh = circle_mesh
 	capture_indicator.material_override = material
 	capture_indicator.position.y = -2.0  # Slightly above ground
+	print("Capture indicator created!")  # Debug message
 	
 	add_child(capture_indicator)
 
@@ -63,10 +73,10 @@ func convert_to_ally():
 	if is_in_group("Enemy_Factory"):
 		remove_from_group("Enemy_Factory")
 		add_to_group("Ally_Factory")
-		GameResources.active_factories += 1
+		GameResources.active_factories[factory_type] += 1
 		_set_captured(true)
 		print("Enemy factory converted to ally!")
 
 func _exit_tree():
 	if is_in_group("Ally_Factory"):
-		GameResources.active_factories -= 1
+		GameResources.active_factories[factory_type] -= 1

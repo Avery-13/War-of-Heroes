@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 func setup(unit_name: String, cost: int, icon: Texture2D):
 	var unit_type: String = unit_name
 	$NameLabel.text = unit_name
-	$CostLabel.text = "$%d" % cost
+	$CostLabel.text = "Iron: %d" % cost
 	$Icon.texture = icon
 	$BuyButton.pressed.connect(func():
 		print("Buy pressed for: ", unit_type)

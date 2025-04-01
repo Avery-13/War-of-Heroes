@@ -74,7 +74,10 @@ func _physics_process(delta: float) -> void:
 		var direction = (target_position - global_transform.origin).normalized()
 		velocity = direction * speed
 		update_animation_parameters("move") # play move animation
-		look_at(global_transform.origin - direction, Vector3.UP)
+		var look_pos = global_position - direction 
+		look_pos.y = global_position.y  # Keep the y-coordinate the same
+		look_at(look_pos , Vector3.UP)  # Look at the target position
+		# look_at(global_transform.origin - direction, Vector3.UP)
 		move_and_slide()
 		
 		# Check if reached target factory

@@ -144,14 +144,14 @@ func select_building(building: Node3D) -> void:
 	deselect_current()
 	
 	selected_building = building
-	selected_building.select()
+	#selected_building.select()
 
 func deselect_current() -> void:
 	if selected_unit:
 		selected_unit.deselect()
 		selected_unit = null
 	if selected_building:
-		selected_building.deselect()
+		#selected_building.deselect()
 		selected_building = null
 
 func handle_right_click() -> void:

@@ -12,13 +12,15 @@ var gold: int = 100:
 		gold = max(value, 0)
 		resources_updated.emit(iron, gold)
 
-var active_factories: int = 0:
-	set(value):
-		active_factories = max(value, 0)
-		_update_income_rate()
+var active_factories: Dictionary = {
+	"Iron": 0,
+	"Gold": 0
+}
 
 var base_iron_income: int = 5
 var factory_iron_bonus: int = 10
+var base_gold_income: int = 5
+var factory_gold_bonus: int = 10
 
 func _ready():
 	var timer = Timer.new()
@@ -27,13 +29,18 @@ func _ready():
 	timer.start(1.0)
 
 func _update_income_rate():
-	print("Active factories: ", active_factories)  # Debug
+	print("Active factories - Iron: ", active_factories["Iron"], " Gold: ", active_factories["Gold"])  # Debug
 
 func _generate_resources():
-	var total_iron_income = base_iron_income + (active_factories * factory_iron_bonus)
+	# Calculate iron income
+	var total_iron_income = base_iron_income + (active_factories["Iron"] * factory_iron_bonus)
 	iron += total_iron_income
-	gold += 5  # Gold stays at base rate
-	print("Income: +", total_iron_income, " Iron")  # Debug
+	
+	# Calculate gold income
+	var total_gold_income = base_gold_income + (active_factories["Gold"] * factory_gold_bonus)
+	gold += total_gold_income
+	
+	print("Income: +", total_iron_income, " Iron, +", total_gold_income, " Gold")  # Debug
 
 func can_afford(cost_iron: int, cost_gold: int) -> bool:
 	return iron >= cost_iron and gold >= cost_gold
