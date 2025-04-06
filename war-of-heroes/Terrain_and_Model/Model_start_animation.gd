@@ -7,7 +7,7 @@ func _ready():
 	# Get the AnimationPlayer node
 	animation_player = $AnimationPlayer
 	# Default into idleanimation
-	var animation: Animation = animation_player.get_animation("Idle_Gun_Aiming")
+	var animation: Animation = animation_player.get_animation("Running")
 	animation.loop_mode = Animation.LOOP_LINEAR
 	
 
