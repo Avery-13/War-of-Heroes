@@ -3,3 +3,4 @@
 /war-of-heroes/Terrain_and_Model/Units/InfantryModel/Infantry.blend filter=lfs diff=lfs merge=lfs -text
 /war-of-heroes/Terrain_and_Model/Units/InfantryModel/Infantry_Model.glb filter=lfs diff=lfs merge=lfs -text
 /war-of-heroes/Terrain_and_Model/Units/ModelAnimation/Infantry_Model.glb filter=lfs diff=lfs merge=lfs -text
+*.glb filter=lfs diff=lfs merge=lfs -text
