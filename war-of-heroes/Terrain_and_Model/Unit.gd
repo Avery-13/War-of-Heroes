@@ -120,19 +120,24 @@ func update_animation_parameters(action: String):
 	if (action == "move"):
 		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
 		animation_tree["parameters/conditions/is_idle"] = false
+		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
+		animation_tree["parameters/conditions/is_firing"] = false
 		animation_player.get_animation("Running").loop_mode = Animation.LOOP_LINEAR		
 		animation_tree["parameters/conditions/is_moving"] = true
 	# fire
 	elif (action == "fire"):
-		animation_tree["parameters/conditions/is_moving"] = false
 		animation_player.get_animation("Running").loop_mode = Animation.LOOP_NONE
-		animation_tree["parameters/conditions/is_firing"] = true
-		animation_tree["parameters/conditions/is_firing"] = false
-		animation_tree["parameters/conditions/is_idle"] = true
+		animation_tree["parameters/conditions/is_moving"] = false
+		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
+		animation_tree["parameters/conditions/is_idle"] = false
 		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+		animation_tree["parameters/conditions/is_firing"] = true
+
 	#idle
 	elif (action == "idle"):
 		animation_player.get_animation("Running").loop_mode = Animation.LOOP_NONE
 		animation_tree["parameters/conditions/is_moving"] = false
+		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
+		animation_tree["parameters/conditions/is_firing"] = false
 		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
 		animation_tree["parameters/conditions/is_idle"] = true
