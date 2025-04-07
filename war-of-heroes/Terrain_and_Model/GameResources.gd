@@ -12,7 +12,20 @@ var gold: int = 100:
 		gold = max(value, 0)
 		resources_updated.emit(iron, gold)
 
+var enemy_iron: int = 100:
+	set(value):
+		enemy_iron = max(value, 0)
+
+var enemy_gold: int = 100:
+	set(value):
+		enemy_gold = max(value, 0)
+
 var active_factories: Dictionary = {
+	"Iron": 0,
+	"Gold": 0
+}
+
+var active_enemy_factories: Dictionary = {
 	"Iron": 0,
 	"Gold": 0
 }
@@ -30,6 +43,7 @@ func _ready():
 
 func _update_income_rate():
 	print("Active factories - Iron: ", active_factories["Iron"], " Gold: ", active_factories["Gold"])  # Debug
+	print("Active enemy factories - Iron: ", active_enemy_factories["Iron"], " Gold: ", active_enemy_factories["Gold"])
 
 func _generate_resources():
 	# Calculate iron income
@@ -40,8 +54,17 @@ func _generate_resources():
 	var total_gold_income = base_gold_income + (active_factories["Gold"] * factory_gold_bonus)
 	gold += total_gold_income
 	
+	# Calculate enemy iron income
+	var enemy_total_iron_income = base_iron_income + (active_enemy_factories["Iron"] * factory_iron_bonus)
+	enemy_iron += total_iron_income
+	
+	# Calculate enemy gold income
+	var enemy_total_gold_income = base_gold_income + (active_enemy_factories["Gold"] * factory_gold_bonus)
+	enemy_gold += total_gold_income
+	
 	print("Income: +", total_iron_income, " Iron, +", total_gold_income, " Gold")  # Debug
-
+	print("Enemy Income: +", enemy_total_iron_income, " Iron, +", enemy_total_gold_income, " Gold")  # Debug
+	
 func can_afford(cost_iron: int, cost_gold: int) -> bool:
 	return iron >= cost_iron and gold >= cost_gold
 

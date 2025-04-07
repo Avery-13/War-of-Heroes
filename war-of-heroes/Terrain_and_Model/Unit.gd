@@ -105,7 +105,7 @@ func _physics_process(delta: float) -> void:
 			
 func _complete_conversion():
 	if is_instance_valid(target_factory) and target_factory.has_method("capture"):
-		target_factory.capture()
+		target_factory.capture(self)
 	queue_free()  # Remove the worker after conversion
 	target_factory = null  # Clear the reference
 
