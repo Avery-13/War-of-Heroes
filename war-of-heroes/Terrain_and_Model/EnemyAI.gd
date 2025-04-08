@@ -61,10 +61,10 @@ func _physics_process(delta: float) -> void:
 	# all units will retreat if the player units strength in the area is higher then theirs 
 	if ("Enemy_Worker" in get_groups() or "Enemy_Infantry" in get_groups() or "Enemy_Marksman" in get_groups() or "Enemy_Tank" in get_groups() or "Enemy_Hero" in get_groups()):
 		# if there are player units nearby the current area
-		var player_strength = get_nearby_player_units()
+		var player_strength = get_nearby_player_strength()
 		if player_strength > 0:
 			# if the player units is stronger then the ai units
-			var ai_strength = get_nearby_ai_units()
+			var ai_strength = get_nearby_ai_strength()
 			if player_strength > ai_strength:
 				# if the units are approaching the hq are are close, defend the area by attacking them (workers will always retreat)
 				if are_players_units_approaching_hq() and "Enemy_Worker" not in get_groups():
@@ -117,7 +117,7 @@ func _physics_process(delta: float) -> void:
 				
 
 # get all nearby ally units total strength
-func get_nearby_player_units():
+func get_nearby_player_strength():
 	var player_strength = 0
 	
 	# check all ally units strength within the area
@@ -139,8 +139,8 @@ func get_nearby_player_units():
 			
 	return player_strength
 	
-# get all nearby enemy units 
-func get_nearby_ai_units():
+# get all nearby enemy units strength 
+func get_nearby_ai_strength():
 	var ai_strength = 0
 	
 	# check all enemy units strength within the area.
@@ -216,8 +216,131 @@ func locate_closest_empty_factory():
 		print("no empty factory, waiting at base")
 		set_movement_target(ai_hq_building.position)
 	
+	
+# get all nearby ally units 
+func get_nearby_player_units():
+	var units = []
+	var i = 0
+	# check all ally units strength within the area
+	for unit in get_tree().get_nodes_in_group("Ally_Infantry"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	for unit in get_tree().get_nodes_in_group("Ally_Marksman"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	for unit in get_tree().get_nodes_in_group("Ally_Tank"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	for unit in get_tree().get_nodes_in_group("Ally_Hero"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	return units
+	
+# get all nearby enemy units 
+func get_nearby_ai_units():
+	var units = []
+	var i = 0
+	# check all enemy units strength within the area.
+	for unit in get_tree().get_nodes_in_group("Enemy_Infantry"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	for unit in get_tree().get_nodes_in_group("Enemy_Marksman"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	for unit in get_tree().get_nodes_in_group("Enemy_Tank"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	for unit in get_tree().get_nodes_in_group("Enemy_Hero"):
+		if global_position.distance_to(unit.global_position) <= detection_radius:
+			units[i] = unit
+			i += 1
+	return units
+
 
    
+func prioritize_target():
+	var best_target = null
+	var highest_priority = -1
+
+	#use my get nearby units Function.
+	var units = get_nearby_player_units()
+	for unit in units:
+		# Calculate priority based on unit type, health, and distance
+		var priority = 0
+		var distance = position.distance_to(unit.position)
+	  			
+		
+		# assign base priority based on unit type	
+		# for infantry, priority is infantry, worker, marksman, hero, tank
+		if "Enemy_Infantry" in get_groups():
+			if unit.get_groups() == "Ally_Worker":
+				priority = 4
+			elif unit.get_groups() == "Ally_Infantry":
+				priority = 5
+			elif unit.get_groups() == "Ally_Marksman":
+				priority = 3
+			elif unit.get_groups() == "Ally_Hero":
+				priority = 2
+			elif unit.get_groups() == "Ally_Tank":
+				priority = 1
+		#for marksman priority is hero, marksman, infantry, tanks, worker
+		elif "Enemy_Marksman" in get_groups():
+			if unit.get_groups() == "Ally_Worker":
+				priority = 1
+			elif unit.get_groups() == "Ally_Infantry":
+				priority = 3
+			elif unit.get_groups() == "Ally_Marksman":
+				priority = 4
+			elif unit.get_groups() == "Ally_Hero":
+				priority = 5
+			elif unit.get_groups() == "Ally_Tank":
+				priority = 2	
+		#for tanks priority is hero, tank, marksman, infantry, worker		
+		elif "Enemy_Tank" in get_groups():
+			if unit.get_groups() == "Ally_Worker":
+				priority = 1
+			elif unit.get_groups() == "Ally_Infantry":
+				priority = 3
+			elif unit.get_groups() == "Ally_Marksman":
+				priority = 4
+			elif unit.get_groups() == "Ally_Hero":
+				priority = 5
+			elif unit.get_groups() == "Ally_Tank":
+				priority = 2
+		
+		#for hero, priority is tank, hero, marksman, infantry, worker
+		elif "Enemy_Hero" in get_groups():
+			match unit.type:
+				"tank":
+					priority += 3
+				"marksman":
+					priority += 2
+				"infantry":
+					priority += 1
+		
+		# Consider health (higher health means higher priority)
+		priority += unit.health / unit.max_health * 5
+		
+		# Consider distance (closer units are higher priority)
+		priority -= distance / 100 # Adjust the divisor as needed
+
+		
+		if priority > highest_priority:
+			highest_priority = priority
+			best_target = unit
+	
+	return best_target
+	
+	
+  
+
 
 
 
