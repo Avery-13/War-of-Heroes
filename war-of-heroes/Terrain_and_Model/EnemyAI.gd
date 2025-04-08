@@ -20,8 +20,9 @@ var attack_target: Node3D = null
 # AI Behavior Parameters
 var detection_radius: float = 30.0
 var hq_detection_radius: float = 50.0
-var retreat_distance: float = 20.0
+var retreat_distance: float = 40.0
 var is_retreat: bool = false
+var timer 
 
 # Unit Type Values
 var infantry_value: int = 1
@@ -37,10 +38,15 @@ var player_hq_building: Node3D
 var ai_hq_building: Node3D
 
 func _ready():
+	# create timer instance
+	timer = Timer.new()
+	add_child(timer)
+	timer.timeout.connect(_on_timer_timeout) 
+	
 	# Navigation setup
 	navigation_agent.path_desired_distance = 1
 	navigation_agent.target_desired_distance = 2
-	navigation_agent.path_max_distance = 30
+	navigation_agent.path_max_distance = 10
 	
 	# Get HQ references
 	player_hq_building = get_node("/root/Node3D/StaticBody3D_HQ_Player")
@@ -146,15 +152,20 @@ func _physics_process(delta: float) -> void:
 		var player_strength = get_nearby_player_strength()
 		var ai_strength = get_nearby_ai_strength()
 		
-		if player_strength > ai_strength:        
+		if player_strength > ai_strength and is_retreat == false: 
+			is_retreat = true  
+			timer.start()
+			timer.wait_time = 5
 			retreat()
+			
 		else:
-			if infantry or marksman or tank or hero:
-				var target = prioritize_target()
-				if target != null:
-					attack(target)
-				else:
-					set_movement_target(player_hq_building.position)
+			if is_retreat == false:
+				if infantry or marksman or tank or hero:
+					var target = prioritize_target()
+					if target != null:
+						attack(target)
+					else:
+						set_movement_target(player_hq_building.position)
 	
 	if worker:
 		locate_closest_empty_factory()
@@ -171,8 +182,13 @@ func _physics_process(delta: float) -> void:
 		
 		if direction.length() > 0.01:
 			velocity = direction * speed
-			look_at(current_agent_position - direction, Vector3.UP)
-		
+			# if the direction is not aligned with the up vector (to avoid "look_at" error)
+			if direction.cross(Vector3.UP).length() > 0.01:
+				look_at(current_agent_position - direction, Vector3.UP)
+			# if the direction is aligned with the up vector, use the right vector to avoid the issue
+			else:
+				look_at(current_agent_position - direction, Vector3.RIGHT)
+			
 		if navigation_agent.distance_to_target() > 0.5:
 			move_and_slide()
 			update_animation_parameters("move")
@@ -323,6 +339,18 @@ func get_nearby_player_units():
 			if is_instance_valid(unit) and global_position.distance_to(unit.global_position) <= detection_radius:
 				units.append(unit)
 	return units
+
+func get_nearby_ai_units():
+	var units = []
+	for group in ["Enemy_Infantry", "Enemy_Marksman", "Enemy_Tank", "Enemy_Hero"]:
+		for unit in get_tree().get_nodes_in_group(group):
+			if is_instance_valid(unit) and global_position.distance_to(unit.global_position) <= detection_radius:
+				units.append(unit)
+	return units
+
+# timer for retreating
+func _on_timer_timeout():
+	is_retreat = false
 
 # Animation control
 func update_animation_parameters(action: String):
