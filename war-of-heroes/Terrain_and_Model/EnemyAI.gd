@@ -34,8 +34,9 @@ var hero_value: int = 4 # strength value of a hero unit
 func _ready():
 	# These values need to be adjusted for the actor's speed
 	# and the navigation layout.
-	navigation_agent.path_desired_distance = 0.5
-	navigation_agent.target_desired_distance = 0.5
+	navigation_agent.path_desired_distance = 1
+	navigation_agent.target_desired_distance = 2
+	navigation_agent.path_max_distance = 30
 	# set Player's HQ buliding position
 	player_hq_building = get_node("/root/Node3D/StaticBody3D_HQ_Player")
 	# set AI's HQ buliding position

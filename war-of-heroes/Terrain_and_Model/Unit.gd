@@ -37,7 +37,7 @@ func _ready():
 		attack_range = 3.0
 
 	# Combat units
-	elif is_in_group("Ally_Units"):
+	elif is_in_group("Ally_Units") and !is_in_group("Ally_Worker"):
 		actions = [ "Attack Nearest", "Guard", "Rest"]
 
 	# HQs 
