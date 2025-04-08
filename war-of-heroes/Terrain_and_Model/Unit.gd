@@ -126,7 +126,7 @@ func take_damage(amount: int):
 	health -= amount
 	health = max(health, 0)
 	print("health: ", health)
-	if health_bar:
+	if health_bar and health_bar.has_method("update_health"):
 		print("healthbarrrrrrrrrrrrrrrr")
 		health_bar.update_health(health, max_health)
 	if health <= 0:
