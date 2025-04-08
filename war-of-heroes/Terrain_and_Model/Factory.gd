@@ -98,6 +98,12 @@ func convert_to_ally():
 		GameResources.active_factories[factory_type] += 1
 		_set_captured(true, "ally")
 		print("Enemy factory converted to ally!")
+	elif is_in_group("Empty_Factory"):
+		remove_from_group("Empty_Factory")
+		add_to_group("Ally_Factory")
+		GameResources.active_factories[factory_type] += 1
+		_set_captured(true, "ally")
+		print("Empty factory converted to ally!")
 
 func convert_to_enemy():
 	if is_in_group("Ally_Factory"):
@@ -106,6 +112,12 @@ func convert_to_enemy():
 		GameResources.active_factories[factory_type] += 1
 		_set_captured(true, "enemy")
 		print("Ally factory converted to enemy!")
+	elif is_in_group("Empty_Factory"):
+		remove_from_group("Empty_Factory")
+		add_to_group("Enemy_Factory")
+		GameResources.active_factories[factory_type] += 1
+		_set_captured(true, "enemy")
+		print("Empty factory converted to enemy!")
 
 func _exit_tree():
 	if is_in_group("Ally_Factory"):

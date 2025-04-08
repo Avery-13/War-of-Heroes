@@ -74,3 +74,10 @@ func spend_resources(cost_iron: int, cost_gold: int) -> bool:
 		gold -= cost_gold
 		return true
 	return false
+
+func spend_ai_resources(cost_iron: int, cost_gold: int) -> bool:
+	if can_afford(cost_iron, cost_gold):
+		enemy_iron -= cost_iron
+		enemy_gold -= cost_gold
+		return true
+	return false

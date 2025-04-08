@@ -4,17 +4,19 @@ extends Panel
 @onready var unit_card_scene = preload("res://UnitCard.tscn")
 @onready var game_resources = get_node("/root/GameResources")  # Reference to GameResources
 
+
+
 # Alternative spawn position calculation for multiple points
-var spawn_points = 4  # Number of spawn points around HQ
+var spawn_points = 20  # Number of spawn points around HQ
 var current_spawn_index = 0
-var spawn_radius = 3.0
+var spawn_radius = 6.0
 
 var units = {
 	"Infantry": { 
 		"cost_iron": 100, 
 		"cost_gold": 5, 
 		"icon": preload("res://icon.svg"),
-		"scene": preload("res://Terrain_and_Model/Units/Infantry.tscn")  # Add your unit scenes here
+		"scene": preload("res://Terrain_and_Model/Units/Infantry.tscn") 
 	},
 	"Worker": { 
 		"cost_iron": 50, 
@@ -90,3 +92,46 @@ func spawn_unit(unit_name: String):
 		# Optionally refund resources if HQ is missing
 		GameResources.iron += unit_data.cost_iron
 		GameResources.gold += unit_data.cost_gold
+
+
+func ai_spawn_unit(unit_name: String):
+	var unit_data = units[unit_name]
+	if GameResources.spend_ai_resources(unit_data.cost_iron, unit_data.cost_gold):
+		var unit_instance = unit_data.scene.instantiate()
+		
+		# Find ai HQ and get spawn position
+		var hq = get_tree().get_nodes_in_group("Enemy_HQ")
+		if hq.size() > 0:
+			var angle = (2 * PI / spawn_points) * current_spawn_index
+			var spawn_position = hq[0].global_transform.origin
+			spawn_position += Vector3(sin(angle), 0, cos(angle)) * spawn_radius 
+			
+			current_spawn_index = (current_spawn_index + 1) % spawn_points
+			
+			# setting up node to group
+			if unit_name == "Worker":
+				unit_instance.add_to_group("Enemy_Units")
+				unit_instance.add_to_group("Enemy_Worker")
+			
+			# Add to scene
+			get_tree().root.add_child(unit_instance)
+			unit_instance.global_transform.origin = spawn_position
+			print("Spawned ", unit_name, " near AI HQ at ", spawn_position)
+			
+			# attach enemy ai script to the unit
+			var ai_script = preload("res://Terrain_and_Model/EnemyAI.gd")
+			unit_instance.set_script(ai_script)
+			unit_instance._ready()
+			unit_instance.set_physics_process(true)
+			
+			# Debug print number of Enemy_Units
+			var enemy_units = get_tree().get_nodes_in_group("Enemy_Units")
+			print("Number of AI Units: ", enemy_units.size())
+		else:
+			print("No Ally HQ found - cannot spawn unit")
+			unit_instance.queue_free()
+			# Optionally refund resources if HQ is missing
+			GameResources.iron += unit_data.cost_iron
+			GameResources.gold += unit_data.cost_gold
+	else: 
+			print("AI - Not enough resources to buy ", unit_name)	

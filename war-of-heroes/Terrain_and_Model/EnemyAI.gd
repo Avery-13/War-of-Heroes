@@ -11,7 +11,7 @@ var target_position: Vector3 = Vector3.ZERO
 var attack_range: float = 6.0  # Range within which the unit can attack
 
 @onready var selection_indicator = $SelectionIndicator  # Reference to the selection indicator
-var target_factory: Node3D = null  # Reference to the target factory
+var target_factory: StaticBody3D = null  # Reference to the target factory
 var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
 @onready var animation_tree : AnimationTree = $AnimationTree
 @onready var animation_player : AnimationPlayer = $AnimationUnit
@@ -257,6 +257,7 @@ func _complete_conversion():
 	if is_instance_valid(target_factory) and target_factory.has_method("capture"):
 		print("captured")
 		target_factory.capture(self)
+		target_factory.convert_to_enemy()
 	queue_free()  # Remove the worker after conversion
 	target_factory = null  # Clear the reference
 
