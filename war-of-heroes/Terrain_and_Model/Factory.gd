@@ -1,11 +1,17 @@
 extends Node3D
 
+
+var health: int = 500
+var max_health: int = 500
+@onready var health_bar = $HealthBar3D
+
 @onready var capture_indicator: MeshInstance3D = null
 var is_captured: bool = false
 var factory_type: String = "Iron" # Default factory type
 
 func _ready():
-
+	if health_bar:
+		health_bar.update_health(health, max_health)
 	#Detect factory type from name
 	if "Gold" in name:
 		factory_type = "Gold"
@@ -29,7 +35,7 @@ func capture(unit: Node3D):
 	if not is_inside_tree():
 		return  # Ensure the node is in the scene tree
 	# if its player capture
-	if is_in_group("Empty_Factory") and unit.is_in_group("Ally_Units") :
+	if is_in_group("Empty_Factory") and unit.is_in_group("Ally_Worker") :
 		remove_from_group("Empty_Factory")
 		add_to_group("Ally_Factory")
 		GameResources.active_factories[factory_type] += 1
@@ -92,13 +98,7 @@ func _remove_capture_indicator():
 		capture_indicator = null
 
 func convert_to_ally():
-	if is_in_group("Enemy_Factory"):
-		remove_from_group("Enemy_Factory")
-		add_to_group("Ally_Factory")
-		GameResources.active_factories[factory_type] += 1
-		_set_captured(true, "ally")
-		print("Enemy factory converted to ally!")
-	elif is_in_group("Empty_Factory"):
+	if is_in_group("Empty_Factory"):
 		remove_from_group("Empty_Factory")
 		add_to_group("Ally_Factory")
 		GameResources.active_factories[factory_type] += 1
@@ -118,6 +118,30 @@ func convert_to_enemy():
 		GameResources.active_factories[factory_type] += 1
 		_set_captured(true, "enemy")
 		print("Empty factory converted to enemy!")
+
+func convert_to_empty():
+	if is_in_group("Enemy_Factory"):
+		remove_from_group("Enemy_Factory")
+		GameResources.active_enemy_factories[factory_type] -= 1
+	elif is_in_group("Ally_Factory"):
+		remove_from_group("Ally_Factory")
+		GameResources.active_factories[factory_type] -= 1
+	
+	add_to_group("Empty_Factory")
+	_set_captured(false, "enemy")
+	print("Factory converted to empty: ", factory_type)
+
+func take_damage(amount: int):
+	health -= amount
+	health = max(health, 0)
+	if health_bar:
+		health_bar.update_health(health, max_health)
+	if health <= 0:
+		die()
+
+func die():
+	print(name, " has been destroyed!")
+	queue_free()
 
 func _exit_tree():
 	if is_in_group("Ally_Factory"):

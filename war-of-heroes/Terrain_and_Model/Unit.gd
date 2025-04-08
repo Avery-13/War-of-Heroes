@@ -1,9 +1,20 @@
 extends CharacterBody3D
 
+# Base Stats for All Units
+var health: int = 100
+var max_health: int = 100
 var speed: float = 5.0
+var attack_damage: int = 10
+var attack_range: float = 6.0  # Range within which the unit can attack
+var attack_cooldown: float = 1.0  # Time between attacks
+var time_since_last_attack: float = 0.0  # Timer for attack cooldown
+
+# Health Bar
+@onready var health_bar = $HealthBar  # Reference to the health bar node
+@onready var health_bar_3d = $HealthBar3D  # Reference to the 3D health bar node
+
 var target_position: Vector3 = Vector3.ZERO
 var is_selected: bool = false
-var attack_range: float = 6.0  # Range within which the unit can attack
 var guard_range: float = 10.0
 var actions: Array[String] = []
 
@@ -17,33 +28,38 @@ var attack_target: Node3D = null  # Currently targeted enemy to attack
 @onready var animation_player : AnimationPlayer = $AnimationUnit
 
 var is_guarding: bool = false
-var attack_cooldown: float = 1.5
 var attack_timer: float = 0.0
 
 func _ready():
-	# Worker units can move and convert factories
+	# Initialize stats based on unit type
+	if is_in_group("Ally_Worker"):
+		_setup_worker()
+	elif is_in_group("Ally_Infantry"):
+		_setup_infantry()
+	elif is_in_group("Ally_Marksman"):
+		_setup_marksman()
+	elif is_in_group("Ally_Tank"):
+		_setup_tank()
+	elif is_in_group("Ally_Hero"):
+		_setup_hero()
+
+	# Initialize health bar
+	if health_bar:
+		health_bar.update_health(health, max_health)
+	
+	# Initialize actions based on unit type
 	if is_in_group("Ally_Worker"):
 		actions = ["Convert"]
-
-	if is_in_group("Ally_Marksman"):
-		attack_range = 10.0
-		
-	if is_in_group("Ally_Infantry"):
-		attack_range = 2.0
-		
-	if is_in_group("Ally_Tank"):
-		attack_range = 15.0
-		
-	if is_in_group("Ally_Turrent"):
-		attack_range = 10.0
-
-	if is_in_group("Ally_Hero"):
-		actions = [ "Attack Nearest", "Guard", "Rest", "Ability"]
-		attack_range = 3.0
-
-	# Combat units
-	elif is_in_group("Ally_Units") and !is_in_group("Ally_Worker"):
-		actions = [ "Attack Nearest", "Guard", "Rest"]
+	elif is_in_group("Ally_Marksman"):
+		actions = ["Attack Nearest", "Guard", "Rest"]
+	elif is_in_group("Ally_Infantry"):
+		actions = ["Attack Nearest", "Guard", "Rest"]
+	elif is_in_group("Ally_Tank"):
+		actions = ["Attack Nearest", "Guard", "Rest"]
+	elif is_in_group("Ally_Turrent"):
+		actions = ["Attack Nearest", "Guard", "Rest"]
+	elif is_in_group("Ally_Hero"):
+		actions = ["Attack Nearest", "Guard", "Rest", "Ability"]
 
 	# HQs 
 	elif is_in_group("Ally_HQ"):
@@ -52,6 +68,43 @@ func _ready():
 	# Enemy units 
 	elif is_in_group("Enemy_Units"):
 		actions = ["Attack"]  # Enemies aren't controlled by player
+
+func _setup_worker():
+	health = 40
+	max_health = 80
+	speed = 4.0
+
+func _setup_infantry():
+	health = 75
+	max_health = 75
+	speed = 5.0
+	attack_damage = 10
+	attack_range = 2.0
+	attack_cooldown = 1.5
+
+func _setup_marksman():
+	health = 50
+	max_health = 50
+	speed = 4.5
+	attack_damage = 25
+	attack_range = 10.0
+	attack_cooldown = 2.0
+
+func _setup_tank():
+	health = 150
+	max_health = 150
+	speed = 3.0
+	attack_damage = 30
+	attack_range = 15.0
+	attack_cooldown = 3.0
+
+func _setup_hero():
+	health = 100
+	max_health = 100
+	speed = 6.0
+	attack_damage = 20
+	attack_range = 3.0
+	attack_cooldown = 1.0
 
 func select() -> void:
 	is_selected = true
@@ -63,6 +116,18 @@ func deselect() -> void:
 
 func move_to(new_target_position: Vector3) -> void:
 	target_position = new_target_position
+
+func take_damage(amount: int):
+	health -= amount
+	health = max(health, 0)
+	if health_bar:
+		health_bar.update_health(health, max_health)
+	if health <= 0:
+		die()
+
+func die():
+	print(name, " has died!")
+	queue_free()
 
 func attack(enemy: Node3D) -> void:
 	# Workers can't attack
@@ -92,45 +157,60 @@ func convert_factory(factory: Node3D) -> void:
 		move_to(factory.global_transform.origin)  # Move to factory first
 
 func _physics_process(delta: float) -> void:
+	time_since_last_attack += delta
+	
+	# Movement logic
 	if target_position != Vector3.ZERO:
 		var distance_to_target = global_transform.origin.distance_to(target_position)
 
-		if distance_to_target > STOPPING_DISTANCE:	
+		if distance_to_target > STOPPING_DISTANCE:    
 			var direction = (target_position - global_transform.origin).normalized()
 			velocity = direction * speed
-			update_animation_parameters("move") # play move animation
+			update_animation_parameters("move")
 			var look_pos = global_position - direction 
 			look_pos.y = global_position.y  # Keep the y-coordinate the same
-			look_at(look_pos , Vector3.UP)  # Look at the target position
-			# look_at(global_transform.origin - direction, Vector3.UP)
+			look_at(look_pos, Vector3.UP)
 			move_and_slide()
 		
 		else:
 			# Stop moving when close to the target
 			velocity = Vector3.ZERO
 			target_position = Vector3.ZERO
-			update_animation_parameters("idle") # play idle animation
-		# Check if reached target factory
-		if target_factory and global_transform.origin.distance_to(target_position) < 3.0:
-			if global_transform.origin.distance_to(target_factory.global_transform.origin) <= 3.0:
+			update_animation_parameters("idle")
+			
+			# Check if reached target factory for conversion
+			if target_factory and global_transform.origin.distance_to(target_factory.global_transform.origin) <= 3.0:
 				_complete_conversion()
-			target_position = Vector3.ZERO
-		
-		if is_instance_valid(target_enemy_factory):
-			if global_transform.origin.distance_to(target_position) < 1.5:
+				target_position = Vector3.ZERO
+			
+			# Check if reached enemy factory for attack
+			if is_instance_valid(target_enemy_factory):
 				if global_transform.origin.distance_to(target_enemy_factory.global_transform.origin) <= attack_range:
 					_convert_enemy_factory()
 				target_position = Vector3.ZERO
-				
-		# Check if we have a target to attack
-		if is_instance_valid(attack_target):
-			var dist_to_enemy = global_transform.origin.distance_to(attack_target.global_transform.origin)
-			if dist_to_enemy <= attack_range:
-				velocity = Vector3.ZERO
+	
+	# Combat logic
+	if is_instance_valid(attack_target):
+		var dist_to_enemy = global_transform.origin.distance_to(attack_target.global_transform.origin)
+		
+		if dist_to_enemy <= attack_range:
+			# Stop moving when in attack range
+			velocity = Vector3.ZERO
+			target_position = Vector3.ZERO
+			
+			# Attack if cooldown is ready
+			if time_since_last_attack >= attack_cooldown:
+				print("Attacking enemy:", attack_target.name)
 				update_animation_parameters("fire")
-				destroy_enemy(attack_target)
-				attack_target = null
-				target_position = Vector3.ZERO
+				if attack_target.has_method("take_damage"):
+					attack_target.take_damage(attack_damage)
+				time_since_last_attack = 0.0
+			else:
+				update_animation_parameters("idle")
+		else:
+			# Move toward enemy if out of range
+			target_position = attack_target.global_transform.origin
+			update_animation_parameters("move")
 				
 	#guard process
 	if is_guarding:
@@ -221,27 +301,28 @@ func _convert_enemy_factory():
 
 func update_animation_parameters(action: String):
 	# move 
-	if (action == "move"):
-		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
-		animation_tree["parameters/conditions/is_idle"] = false
-		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
-		animation_tree["parameters/conditions/is_firing"] = false
-		animation_player.get_animation("Running").loop_mode = Animation.LOOP_LINEAR		
-		animation_tree["parameters/conditions/is_moving"] = true
-	# fire
-	elif (action == "fire"):
-		animation_player.get_animation("Running").loop_mode = Animation.LOOP_NONE
-		animation_tree["parameters/conditions/is_moving"] = false
-		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
-		animation_tree["parameters/conditions/is_idle"] = false
-		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
-		animation_tree["parameters/conditions/is_firing"] = true
+	if ("Ally_Tank" not in get_groups()):
+		if (action == "move"):
+			animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
+			animation_tree["parameters/conditions/is_idle"] = false
+			animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
+			animation_tree["parameters/conditions/is_firing"] = false
+			animation_player.get_animation("Running").loop_mode = Animation.LOOP_LINEAR		
+			animation_tree["parameters/conditions/is_moving"] = true
+		# fire
+		elif (action == "fire"):
+			animation_player.get_animation("Running").loop_mode = Animation.LOOP_NONE
+			animation_tree["parameters/conditions/is_moving"] = false
+			animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
+			animation_tree["parameters/conditions/is_idle"] = false
+			animation_player.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+			animation_tree["parameters/conditions/is_firing"] = true
 
-	#idle
-	elif (action == "idle"):
-		animation_player.get_animation("Running").loop_mode = Animation.LOOP_NONE
-		animation_tree["parameters/conditions/is_moving"] = false
-		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
-		animation_tree["parameters/conditions/is_firing"] = false
-		animation_player.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
-		animation_tree["parameters/conditions/is_idle"] = true
+		#idle
+		elif (action == "idle"):
+			animation_player.get_animation("Running").loop_mode = Animation.LOOP_NONE
+			animation_tree["parameters/conditions/is_moving"] = false
+			animation_player.get_animation("Idle").loop_mode = Animation.LOOP_NONE
+			animation_tree["parameters/conditions/is_firing"] = false
+			animation_player.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+			animation_tree["parameters/conditions/is_idle"] = true

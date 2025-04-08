@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqox2rmvb2tui"]
+
+[ext_resource type="Script" path="res://Terrain_and_Model/HealthBar3D.gd" id="1_tsya7"]
+[ext_resource type="Texture2D" uid="uid://bou0b78c2v4ri" path="res://healthbarUnder.png" id="2_x5lik"]
+[ext_resource type="Texture2D" uid="uid://ds45lmq70a167" path="res://healthbarProgress.png" id="3_7cdve"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_shst5"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_tsya7")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+transparent = false
+texture = SubResource("ViewportTexture_shst5")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(65, 10)
+render_target_update_mode = 4
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="SubViewport"]
+offset_right = 64.0
+offset_bottom = 10.0
+texture_under = ExtResource("2_x5lik")
+texture_progress = ExtResource("3_7cdve")

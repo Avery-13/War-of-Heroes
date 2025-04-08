@@ -92,7 +92,10 @@ func handle_left_click(mouse_position: Vector2) -> void:
 		var factory = _find_factory_in_parents(clicked_object)
 		if factory and factory.is_in_group("Enemy_Factory"):
 			print("Combat unit commanded to attack enemy factory")
+			# First attack the factory (in case we want combat animations/effects)
 			selected_unit.attack(factory)
+			# Then convert it to empty
+			factory.convert_to_empty()
 			return
 	
 	# 3. Check for unit selection
@@ -125,7 +128,7 @@ func handle_left_click(mouse_position: Vector2) -> void:
 func _find_factory_in_parents(node: Node) -> Node3D:
 	var current = node
 	while current:
-		if current.is_in_group("Empty_Factory") or current.is_in_group("Ally_Factory"):
+		if current.is_in_group("Empty_Factory") or current.is_in_group("Ally_Factory") or current.is_in_group("Enemy_Factory"):
 			return current
 		current = current.get_parent()
 	return null
@@ -168,7 +171,7 @@ func handle_right_click() -> void:
 	deselect_current()
 
 func attack_enemy(enemy: Node3D) -> void:
-	if selected_unit:
+	if selected_unit and selected_unit.has_method("attack"):
 		selected_unit.attack(enemy)
 
 func handle_unit_command(position: Vector3, clicked_object: Node3D):

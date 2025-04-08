@@ -62,9 +62,9 @@ func _generate_resources():
 	var enemy_total_gold_income = base_gold_income + (active_enemy_factories["Gold"] * factory_gold_bonus)
 	enemy_gold += enemy_total_gold_income
 	
-	print("Income: +", total_iron_income, " Iron, +", total_gold_income, " Gold")  # Debug
-	print("Enemy Income: +", enemy_total_iron_income, " Iron, +", enemy_total_gold_income, " Gold")  # Debug
-	print ("Enemy Total: ", enemy_iron, enemy_gold)
+	# print("Income: +", total_iron_income, " Iron, +", total_gold_income, " Gold")  # Debug
+	# print("Enemy Income: +", enemy_total_iron_income, " Iron, +", enemy_total_gold_income, " Gold")  # Debug
+	# print ("Enemy Total: ", enemy_iron, enemy_gold)
 	
 func can_afford(cost_iron: int, cost_gold: int) -> bool:
 	return iron >= cost_iron and gold >= cost_gold
