@@ -1,15 +1,27 @@
 extends Node3D
 
-@onready var progress_bar = $SubViewport/TextureProgressBar
+@onready var progress_bar = $BarViewport/TextureProgressBar
+@onready var sprite = $Sprite3D
 
-func update_health(value: int, max_value: int):
-	progress_bar.max_value = max_value
-	progress_bar.value = value
-	# Optional: Change color based on health percentage
-	var health_percent = float(value) / max_value
+func _ready():
+	# Link Sprite3D to viewport texture
+	sprite.texture = $BarViewport.get_texture()
+	# Test (should show full bar)
+	update_health(100, 100)
+
+func update_health(current: int, max_health: int):
+	# Update progress bar
+	progress_bar.max_value = max_health
+	progress_bar.value = current
+	
+	# Optional: Tint based on health (if using white textures)
+	var health_percent = float(current) / max_health
 	if health_percent < 0.3:
-		progress_bar.tint_progress = Color.RED
+		progress_bar.modulate = Color.RED
 	elif health_percent < 0.6:
-		progress_bar.tint_progress = Color.YELLOW
+		progress_bar.modulate = Color.YELLOW
 	else:
-		progress_bar.tint_progress = Color.GREEN
+		progress_bar.modulate = Color.GREEN
+	
+	# Force viewport update
+	$BarViewport.render_target_update_mode = SubViewport.UPDATE_ONCE

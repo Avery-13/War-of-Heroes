@@ -32,15 +32,15 @@ var attack_timer: float = 0.0
 
 func _ready():
 	# Initialize stats based on unit type
-	if is_in_group("Ally_Worker"):
+	if is_in_group("Ally_Worker") or is_in_group("Enemy_Worker"):
 		_setup_worker()
-	elif is_in_group("Ally_Infantry"):
+	elif is_in_group("Ally_Infantry") or is_in_group("Enemy_Infantry"):
 		_setup_infantry()
-	elif is_in_group("Ally_Marksman"):
+	elif is_in_group("Ally_Marksman") or is_in_group("Enemy_Marksman"):
 		_setup_marksman()
-	elif is_in_group("Ally_Tank"):
+	elif is_in_group("Ally_Tank") or is_in_group("Enemy_Tank"):
 		_setup_tank()
-	elif is_in_group("Ally_Hero"):
+	elif is_in_group("Ally_Hero") or is_in_group("Enemy_Hero"):
 		_setup_hero()
 
 	# Initialize health bar
@@ -70,15 +70,15 @@ func _ready():
 		actions = ["Attack"]  # Enemies aren't controlled by player
 
 func _setup_worker():
-	health = 40
-	max_health = 80
+	health = 300
+	max_health = 300
 	speed = 4.0
 
 func _setup_infantry():
 	health = 75
 	max_health = 75
 	speed = 5.0
-	attack_damage = 10
+	attack_damage = 30
 	attack_range = 2.0
 	attack_cooldown = 1.5
 
@@ -94,7 +94,7 @@ func _setup_tank():
 	health = 150
 	max_health = 150
 	speed = 3.0
-	attack_damage = 30
+	attack_damage = 50
 	attack_range = 15.0
 	attack_cooldown = 3.0
 
@@ -202,8 +202,10 @@ func _physics_process(delta: float) -> void:
 			if time_since_last_attack >= attack_cooldown:
 				print("Attacking enemy:", attack_target.name)
 				update_animation_parameters("fire")
+				print("Target has method take_damage:", attack_target.has_method("take_damage"))
 				if attack_target.has_method("take_damage"):
 					attack_target.take_damage(attack_damage)
+					print("Dealt ", attack_damage, " damage to ", attack_target.name, " remaining health: ", attack_target.health)
 				time_since_last_attack = 0.0
 			else:
 				update_animation_parameters("idle")

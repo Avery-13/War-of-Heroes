@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 [gd_scene load_steps=35 format=4 uid="uid://d066me0s18y2m"]
 
 [ext_resource type="Texture2D" uid="uid://dso1pysbl3utk" path="res://Terrain_and_Model/Units/HeroModel/Hero_ely-vanguardsoldier-kerwinatienza_diffuse.png" id="1_6cedy"]
@@ -6583,3 +6584,14 @@ libraries = {
 }
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+=======
+[gd_scene load_steps=3 format=3 uid="uid://r4wkjqvw4ukq"]
+
+[ext_resource type="PackedScene" uid="uid://drdjjfq2fniy0" path="res://Terrain_and_Model/Units/HeroModel/Hero.glb" id="1_77gly"]
+[ext_resource type="PackedScene" uid="uid://dqox2rmvb2tui" path="res://HealthBar3D.tscn" id="2_nx4vn"]
+
+[node name="Hero" instance=ExtResource("1_77gly")]
+
+[node name="Node3D" parent="." index="2" instance=ExtResource("2_nx4vn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.26343, 0)
+>>>>>>> Stashed changes

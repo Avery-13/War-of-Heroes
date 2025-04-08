@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://ds45lmq70a167" path="res://healthbarProgress.png" id="3_7cdve"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_shst5"]
-viewport_path = NodePath("SubViewport")
+viewport_path = NodePath("BarViewport")
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_tsya7")
@@ -15,12 +15,13 @@ billboard = 1
 transparent = false
 texture = SubResource("ViewportTexture_shst5")
 
-[node name="SubViewport" type="SubViewport" parent="."]
+[node name="BarViewport" type="SubViewport" parent="."]
+transparent_bg = true
 size = Vector2i(65, 10)
 render_target_update_mode = 4
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="SubViewport"]
-offset_right = 64.0
-offset_bottom = 10.0
+[node name="TextureProgressBar" type="TextureProgressBar" parent="BarViewport"]
+offset_right = 100.0
+offset_bottom = 20.0
 texture_under = ExtResource("2_x5lik")
 texture_progress = ExtResource("3_7cdve")
