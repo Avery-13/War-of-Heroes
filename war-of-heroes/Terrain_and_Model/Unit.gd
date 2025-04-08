@@ -129,7 +129,7 @@ func _physics_process(delta: float) -> void:
 
 func rest():
 	print("Resting...")
-	velocity = Vector3.ZERO
+	target_position = Vector3.ZERO
 	update_animation_parameters("idle")
 	# You can also start HP regen here if needed
 
