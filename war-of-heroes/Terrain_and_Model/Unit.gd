@@ -4,6 +4,7 @@ var speed: float = 5.0
 var target_position: Vector3 = Vector3.ZERO
 var is_selected: bool = false
 var attack_range: float = 6.0  # Range within which the unit can attack
+var guard_range: float = 10.0
 var actions: Array[String] = []
 
 const STOPPING_DISTANCE: float = 0.5  # Distance to stop before the target position
@@ -14,6 +15,10 @@ var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
 var attack_target: Node3D = null  # Currently targeted enemy to attack
 @onready var animation_tree : AnimationTree = $AnimationTree
 @onready var animation_player : AnimationPlayer = $AnimationUnit
+
+var is_guarding: bool = false
+var attack_cooldown: float = 1.5
+var attack_timer: float = 0.0
 
 func _ready():
 	# Worker units can move and convert factories
@@ -126,6 +131,22 @@ func _physics_process(delta: float) -> void:
 				destroy_enemy(attack_target)
 				attack_target = null
 				target_position = Vector3.ZERO
+				
+	#guard process
+	if is_guarding:
+		attack_timer -= delta
+
+		# Search for enemies in range
+		for enemy in get_tree().get_nodes_in_group("Enemy_Units"):
+			if not is_instance_valid(enemy):
+				continue
+			var dist = global_position.distance_to(enemy.global_position)
+			if dist <= guard_range:
+				if attack_timer <= 0.0:
+					print("Guarding unit attacking:", enemy.name)
+					attack(enemy)
+					attack_timer = attack_cooldown
+				break  # Only attack one at a time
 
 func rest():
 	print("Resting...")
@@ -160,8 +181,11 @@ func perform_action(action_name: String) -> void:
 			attack_nearest_enemy()
 
 		"Guard":
-			print("Unit is guarding the area.")
-			# Add logic like stand still & scan for enemies
+			print("Unit is now guarding.")
+			is_guarding = true
+			velocity = Vector3.ZERO
+			target_position = Vector3.ZERO
+			update_animation_parameters("idle")
 
 		"Rest":
 			rest()
