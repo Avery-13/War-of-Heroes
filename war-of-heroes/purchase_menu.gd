@@ -126,10 +126,14 @@ func ai_spawn_unit(unit_name: String):
 	if GameResources.spend_ai_resources(unit_data.cost_iron, unit_data.cost_gold):
 		var unit_instance = unit_data.scene.instantiate()
 		
-		# Find ai HQ and get spawn position
+		# Find ai HQ and set spawn position
 		var hq = get_tree().get_nodes_in_group("Enemy_HQ")
 		if hq.size() > 0:
-			var angle = (2 * PI / spawn_points) * current_spawn_index
+			#var angle = (2 * PI / spawn_points) * current_spawn_index
+			# spawn on the left side of the HQ
+			var angle_start = PI
+			var angle_end = 2 * PI
+			var angle = angle_start + (angle_end - angle_start) * float (current_spawn_index) / float(spawn_points)
 			var spawn_position = hq[0].global_transform.origin
 			spawn_position += Vector3(sin(angle), 0, cos(angle)) * spawn_radius 
 			
