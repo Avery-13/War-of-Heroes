@@ -129,6 +129,11 @@ func _find_factory_in_parents(node: Node) -> Node3D:
 			return current
 		current = current.get_parent()
 	return null
+	
+func _on_action_pressed(action_name: String):
+	if selected_unit and selected_unit.has_method("perform_action"):
+		selected_unit.perform_action(action_name)
+
 
 func select_unit(unit: Node3D) -> void:
 	# Deselect current selections
@@ -139,7 +144,7 @@ func select_unit(unit: Node3D) -> void:
 	
 		# Show actions in the ActionsPanel
 	if "actions" in unit:
-		actions_panel.show_actions(unit.actions)
+		actions_panel.show_actions(unit.actions, Callable(self, "_on_action_pressed"))
 
 func select_building(building: Node3D) -> void:
 	# Deselect current selections

@@ -11,17 +11,34 @@ const STOPPING_DISTANCE: float = 0.5  # Distance to stop before the target posit
 @onready var selection_indicator = $SelectionIndicator  # Reference to the selection indicator
 var target_factory: Node3D = null  # Reference to the target factory
 var target_enemy_factory: Node3D = null  # Reference to the target enemy factory
+var attack_target: Node3D = null  # Currently targeted enemy to attack
 @onready var animation_tree : AnimationTree = $AnimationTree
 @onready var animation_player : AnimationPlayer = $AnimationUnit
 
 func _ready():
 	# Worker units can move and convert factories
 	if is_in_group("Ally_Worker"):
-		actions = ["Move", "Convert"]
+		actions = ["Convert"]
+
+	if is_in_group("Ally_Marksman"):
+		attack_range = 10.0
+		
+	if is_in_group("Ally_Infantry"):
+		attack_range = 2.0
+		
+	if is_in_group("Ally_Tank"):
+		attack_range = 15.0
+		
+	if is_in_group("Ally_Turrent"):
+		attack_range = 10.0
+
+	if is_in_group("Ally_Hero"):
+		actions = [ "Attack Nearest", "Guard", "Rest", "Ability"]
+		attack_range = 3.0
 
 	# Combat units
 	elif is_in_group("Ally_Units"):
-		actions = ["Move", "Attack Nearest", "Guard", "Rest"]
+		actions = [ "Attack Nearest", "Guard", "Rest"]
 
 	# HQs 
 	elif is_in_group("Ally_HQ"):
@@ -54,10 +71,8 @@ func attack(enemy: Node3D) -> void:
 		move_to(enemy.global_transform.origin)
 	else:
 		# Normal attack behavior
-		target_position = enemy.global_transform.origin
-		if global_transform.origin.distance_to(enemy.global_transform.origin) <= attack_range:
-			update_animation_parameters("fire") # play fire animation
-			destroy_enemy(enemy)
+		attack_target = enemy
+		move_to(enemy.global_transform.origin)
 
 func destroy_enemy(enemy: Node3D) -> void:
 	enemy.queue_free()  # Destroy the enemy
@@ -101,7 +116,72 @@ func _physics_process(delta: float) -> void:
 				if global_transform.origin.distance_to(target_enemy_factory.global_transform.origin) <= attack_range:
 					_convert_enemy_factory()
 				target_position = Vector3.ZERO
+				
+		# Check if we have a target to attack
+		if is_instance_valid(attack_target):
+			var dist_to_enemy = global_transform.origin.distance_to(attack_target.global_transform.origin)
+			if dist_to_enemy <= attack_range:
+				velocity = Vector3.ZERO
+				update_animation_parameters("fire")
+				destroy_enemy(attack_target)
+				attack_target = null
+				target_position = Vector3.ZERO
 
+func rest():
+	print("Resting...")
+	velocity = Vector3.ZERO
+	update_animation_parameters("idle")
+	# You can also start HP regen here if needed
+
+func attack_nearest_enemy():
+	var nearest_enemy: Node3D = null
+	var min_distance = INF
+
+	for enemy in get_tree().get_nodes_in_group("Enemy_Units"):
+		var dist = global_position.distance_to(enemy.global_position)
+		if dist < min_distance:
+			min_distance = dist
+			nearest_enemy = enemy
+
+	if nearest_enemy:
+		print("Attacking nearest enemy:", nearest_enemy.name)
+		attack(nearest_enemy)
+	else:
+		print("No enemy units found.")
+
+
+func perform_action(action_name: String) -> void:
+	match action_name:
+		"Move":
+			print("Move action selected — waiting for click on map")
+			
+
+		"Attack Nearest":
+			attack_nearest_enemy()
+
+		"Guard":
+			print("Unit is guarding the area.")
+			# Add logic like stand still & scan for enemies
+
+		"Rest":
+			rest()
+
+		"Convert":
+			print("Click on a factory to convert it.")
+			
+
+		"Attack":
+			print("Click on a target to attack.")
+			
+
+		"Create Unit":
+			print("TODO: Create unit")  
+
+		"Build Structure":
+			print("TODO: Build structure UI")
+
+		_:
+			print("Unknown action:", action_name)
 			
 func _complete_conversion():
 	if is_instance_valid(target_factory) and target_factory.has_method("capture"):
