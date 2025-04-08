@@ -37,7 +37,7 @@ func _ready():
 	else:
 		print("SUCCESS: Found camera:", camera.name)
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			handle_left_click(event.position)
@@ -156,6 +156,9 @@ func deselect_current() -> void:
 	if selected_building:
 		#selected_building.deselect()
 		selected_building = null
+		
+	actions_panel.clear_actions()
+	
 
 func handle_right_click() -> void:
 	deselect_current()
