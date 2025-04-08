@@ -7,7 +7,7 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_shst5"]
 viewport_path = NodePath("BarViewport")
 
-[node name="Node3D" type="Node3D"]
+[node name="HealthBar" type="Node3D"]
 script = ExtResource("1_tsya7")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]

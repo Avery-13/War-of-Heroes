@@ -10,7 +10,7 @@ var attack_cooldown: float = 1.0  # Time between attacks
 var time_since_last_attack: float = 0.0  # Timer for attack cooldown
 
 # Health Bar
-@onready var health_bar = $HealthBar  # Reference to the health bar node
+@onready var health_bar =   get_child(0) # Reference to the health bar node
 @onready var health_bar_3d = $HealthBar3D  # Reference to the 3D health bar node
 
 var target_position: Vector3 = Vector3.ZERO
@@ -44,7 +44,7 @@ func _ready():
 		_setup_hero()
 
 	# Initialize health bar
-	if health_bar:
+	if health_bar && health_bar.has_method("update_health"):
 		health_bar.update_health(health, max_health)
 	
 	# Initialize actions based on unit type
@@ -120,7 +120,9 @@ func move_to(new_target_position: Vector3) -> void:
 func take_damage(amount: int):
 	health -= amount
 	health = max(health, 0)
+	print("health: ", health)
 	if health_bar:
+		print("healthbarrrrrrrrrrrrrrrr")
 		health_bar.update_health(health, max_health)
 	if health <= 0:
 		die()
