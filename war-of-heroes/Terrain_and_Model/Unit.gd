@@ -13,6 +13,11 @@ var time_since_last_attack: float = 0.0  # Timer for attack cooldown
 @onready var health_bar =   get_child(0) # Reference to the health bar node
 @onready var health_bar_3d = $HealthBar3D  # Reference to the 3D health bar node
 
+# Resource Collection
+var resource_check_timer: float = 0.0
+const RESOURCE_CHECK_INTERVAL: float = 0.5  # Time interval to check for resources
+const PICKUP_RADIUS: float = 5.0  # Radius to check for resources
+
 var target_position: Vector3 = Vector3.ZERO
 var is_selected: bool = false
 var guard_range: float = 10.0
@@ -160,7 +165,11 @@ func convert_factory(factory: Node3D) -> void:
 
 func _physics_process(delta: float) -> void:
 	time_since_last_attack += delta
-	
+	# Resource pickup logic
+	resource_check_timer += delta
+	if resource_check_timer >= RESOURCE_CHECK_INTERVAL:
+		resource_check_timer = 0.0
+		_check_nearby_resources()
 	# Movement logic
 	if target_position != Vector3.ZERO:
 		var distance_to_target = global_transform.origin.distance_to(target_position)
@@ -232,11 +241,76 @@ func _physics_process(delta: float) -> void:
 					attack_timer = attack_cooldown
 				break  # Only attack one at a time
 
+func _check_nearby_resources():
+	# Only check nodes in the "Resources" group
+	for resource in get_tree().get_nodes_in_group("Resources"):
+		# Skip if not a StaticBody3D or too far away
+		if not resource is StaticBody3D:
+			continue
+		if global_position.distance_to(resource.global_position) > PICKUP_RADIUS:
+			continue
+			
+		var resource_name = resource.name.to_lower()
+		var resources = GameResources
+		
+		if not resources:
+			printerr("GameResources node not found!")
+			continue
+			
+		# Handle different resource types
+		if "health" in resource_name:
+			_handle_health_resource(resource)
+		elif "construction" in resource_name:
+			_handle_construction_resource(resource, resources)
+		elif "money" in resource_name:
+			_handle_money_resource(resource, resources)
+
+func _handle_health_resource(resource: StaticBody3D):
+	var unit_group = "Ally_Units" if is_in_group("Ally_Units") else "Enemy_Units"
+	_heal_nearby_units(unit_group)
+	_destroy_resource(resource)
+
+func _handle_construction_resource(resource: StaticBody3D, resources: Node):
+	if is_in_group("Ally_Units"):
+		resources.iron += 10
+	else:
+		resources.enemy_iron += 10
+	_destroy_resource(resource)
+
+func _handle_money_resource(resource: StaticBody3D, resources: Node):
+	if is_in_group("Ally_Units"):
+		resources.gold += 10
+	else:
+		resources.enemy_gold += 10
+	_destroy_resource(resource)
+
+func _heal_nearby_units(unit_group: String):
+	var heal_amount = 10
+	var heal_radius = 5.0
+	
+	for unit in get_tree().get_nodes_in_group(unit_group):
+		if unit != self and global_position.distance_to(unit.global_position) <= heal_radius:
+			unit.health = min(unit.health + heal_amount, unit.max_health)
+			if unit.has_method("update_health_display"):
+				unit.update_health_display()
+
+func _destroy_resource(resource: StaticBody3D):
+	# Optional: Play effect before destroying
+	if resource.has_node("PickupEffect"):
+		var effect = resource.get_node("PickupEffect")
+		effect.emitting = true
+		effect.reparent(get_tree().current_scene)
+	
+	resource.queue_free()
+
 func rest():
 	print("Resting...")
 	target_position = Vector3.ZERO
 	update_animation_parameters("idle")
-	# You can also start HP regen here if needed
+	# Regenerate health over time
+	health += 1
+	health = min(health, max_health)  # Ensure health doesn't exceed max
+	health_bar.update_health(health, max_health)
 
 func attack_nearest_enemy():
 	var nearest_enemy: Node3D = null
