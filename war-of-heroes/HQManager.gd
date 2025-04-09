@@ -1,8 +1,8 @@
 # HQManager.gd
 extends Node
 
-@onready var ally_hq_health_bar = get_child(0)
-@onready var enemy_hq_health_bar = get_child(0)
+var ally_hq_health_bar: Node3D
+var enemy_hq_health_bar: Node3D
 
 # HQ health values
 var ally_hq_health := 1000
@@ -17,7 +17,9 @@ var enemy_hq: Node3D
 func _ready():
 	# Find HQs in the scene
 	ally_hq = get_node("/root/Node3D/StaticBody3D_HQ_Player")
+	ally_hq_health_bar = ally_hq.get_child(0)
 	enemy_hq = get_node("/root/Node3D/StaticBody3D_HQ_Enemy")
+	enemy_hq_health_bar = enemy_hq.get_child(0)
 	
 	# Verify we found them
 	if not ally_hq:
