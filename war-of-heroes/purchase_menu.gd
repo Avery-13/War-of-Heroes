@@ -15,25 +15,25 @@ var units = {
 	"Worker": { 
 		"cost_iron": 50, 
 		"cost_gold": 100, 
-		"icon": preload("res://icon.svg"),
+		"icon": preload("res://Screenshot 2025-04-08 193653.png"),
 		"scene": preload("res://Terrain_and_Model/Units/Worker.tscn")
 	},
 	"Infantry": { 
 		"cost_iron": 100, 
 		"cost_gold": 50, 
-		"icon": preload("res://icon.svg"),
+		"icon": preload("res://Screenshot 2025-04-08 193534.png"),
 		"scene": preload("res://Terrain_and_Model/Units/Infantry.tscn") 
 	},
 	"Marksman": { 
 		"cost_iron": 200, 
 		"cost_gold": 100, 
-		"icon": preload("res://icon.svg"),
+		"icon": preload("res://Screenshot 2025-04-08 193737.png"),
 		"scene": preload("res://Terrain_and_Model/Units/Marksman.tscn") 
 	},
 	"Tank": { 
 		"cost_iron": 400, 
 		"cost_gold": 200, 
-		"icon": preload("res://icon.svg"),
+		"icon": preload("res://Screenshot 2025-03-30 194949.png"),
 		"scene": preload("res://Terrain_and_Model/Units/Tank.tscn")
 	},
 }

@@ -9,15 +9,17 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -121.0
-offset_right = 121.0
-offset_bottom = 114.0
+offset_right = 61.0
+offset_bottom = 189.0
 grow_horizontal = 2
 theme = SubResource("Theme_e1ei4")
 alignment = 1
 script = ExtResource("1_33y68")
 
 [node name="Icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
+expand_mode = 2
 
 [node name="NameLabel" type="Label" parent="."]
 layout_mode = 2
