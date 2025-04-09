@@ -60,7 +60,7 @@ func _ready():
 	
 	# Initialize actions based on unit type
 	if is_in_group("Ally_Worker"):
-		actions = ["Convert"]
+		actions = ["Convert", "Rest"]
 	elif is_in_group("Ally_Marksman"):
 		actions = ["Attack Nearest", "Guard", "Rest"]
 	elif is_in_group("Ally_Infantry"):
