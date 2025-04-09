@@ -1,6 +1,7 @@
-[gd_scene load_steps=32 format=4 uid="uid://igb7tqjl2yal"]
+[gd_scene load_steps=33 format=4 uid="uid://igb7tqjl2yal"]
 
 [ext_resource type="Texture2D" uid="uid://crnnepbjjtcic" path="res://Terrain_and_Model/Units/TankModel/Tank/Tank_0.png" id="1_5k6kn"]
+[ext_resource type="PackedScene" uid="uid://dqox2rmvb2tui" path="res://HealthBar3D.tscn" id="1_g1up1"]
 [ext_resource type="Texture2D" uid="uid://yq2pta1np41w" path="res://Terrain_and_Model/Units/TankModel/Tank/Tank_1.png" id="2_46bia"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_w0tn4"]
@@ -3721,6 +3722,9 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_i7wmt")
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
+
+[node name="HealthBar" parent="." instance=ExtResource("1_g1up1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1266, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, -0.910645)
