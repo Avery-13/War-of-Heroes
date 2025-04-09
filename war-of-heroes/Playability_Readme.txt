@@ -6,6 +6,7 @@ WASD - Camera movement
 Scroll wheel - Zoom in/out
 Moving mouse past the edge of the screen - Camera movement
 After Selecting a unit and then while moving a unit (see below), hold Spacebar to track the selected unit - Camera movement 
+P - open purchase menu
 
 Left Click - Select unit
 Left Click on terrain while unit selected - Move unit
