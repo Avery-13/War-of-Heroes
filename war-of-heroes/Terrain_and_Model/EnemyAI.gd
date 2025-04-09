@@ -20,11 +20,11 @@ var attack_target: Node3D = null
 # AI Behavior Parameters
 var detection_radius: float = 30.0
 var hq_detection_radius: float = 50.0
-var factory_detection_radius: float = 100.0
+var factory_detection_radius: float = 50.0
 var retreat_distance: float = 40.0
 var is_retreat: bool = false
 var timer 
-var enemy_near_
+
 
 # Unit Type Values
 var infantry_value: int = 1
@@ -128,17 +128,21 @@ func set_movement_target(movement_target: Vector3):
 func attack(enemy: Node3D) -> void:
 	if enemy.is_in_group("Enemy_Factory"):
 		target_enemy_factory = enemy
-		set_movement_target(enemy.global_transform.origin)
+		 
+		set_movement_target(enemy.global_position - Vector3(attack_range, 0 , attack_range))
 	else:
 		attack_target = enemy
 		set_movement_target(enemy.global_transform.origin)
 
 func destroy_enemy(enemy: Node3D) -> void:
 	if enemy.has_method("take_damage"):
+		print("Take hit")
 		enemy.take_damage(attack_damage)
 	else:
+		print("Enemy destroyed!")
 		enemy.queue_free()
-	print("Enemy destroyed!")
+	set_movement_target(player_hq_building.position)
+
 
 func _physics_process(delta: float) -> void:
 	time_since_last_attack += delta
@@ -161,23 +165,25 @@ func _physics_process(delta: float) -> void:
 			timer.wait_time = 5
 			retreat()
 		# if units is not retreating and the player stregnth is not higher, attack
+		elif is_retreat == false:
+			if infantry or marksman or tank or hero:
+				# attack nearby player units if they exist
+				var target = prioritize_target()
+				if target != null:
+					attack(target)
+				# or if there are no nearby targets, but there are ally units near ai factories and the unit itself is nearby, defend the factory
+				elif (target == null and player_units_nearby_factory!= null):
+					var help_factory = player_units_nearby_factory()
+					if (help_factory != null):
+						timer.start()
+						timer.wait_time = 5
+						set_movement_target(help_factory.position)
+				# otherwise attack the player HQ
+				else:
+					set_movement_target(player_hq_building.position)
+		#default into HQ in all cases
 		else:
-			if is_retreat == false:
-				if infantry or marksman or tank or hero:
-					# attack nearby player units if they exist
-					var target = prioritize_target()
-					if target != null:
-						attack(target)
-					# or if there are no nearby targets, but there are ally units near ai factories and the unit itself is nearby, defend the factory
-					elif (target == null and player_units_nearby_factory!= null):
-						var help_factory = player_units_nearby_factory()
-						if (help_factory != null):
-							timer.start()
-							timer.wait_time = 5
-							set_movement_target(help_factory.position)
-					# otherwise attack the player HQ
-					else:
-						set_movement_target(player_hq_building.position)
+			set_movement_target(player_hq_building.position)
 	
 	# workers will find the cloest empty factory to capture
 	if worker:
@@ -209,7 +215,6 @@ func _physics_process(delta: float) -> void:
 	# Combat handling
 	if is_instance_valid(attack_target):
 		var dist_to_enemy = global_position.distance_to(attack_target.global_position)
-		
 		if dist_to_enemy <= attack_range:
 			velocity = Vector3.ZERO
 			if time_since_last_attack >= attack_cooldown:
