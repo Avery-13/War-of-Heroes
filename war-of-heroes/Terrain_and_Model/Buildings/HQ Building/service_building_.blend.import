@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://c70jd8qsagil1"
-valid=false
+path="res://.godot/imported/service_building_.blend-cf0724c6ec98c7fd5e97a4e9fc54a036.scn"
 
 [deps]
 
 source_file="res://Terrain_and_Model/Buildings/HQ Building/service_building_.blend"
+dest_files=["res://.godot/imported/service_building_.blend-cf0724c6ec98c7fd5e97a4e9fc54a036.scn"]
 
 [params]
 

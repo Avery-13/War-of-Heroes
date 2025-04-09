@@ -133,6 +133,7 @@ func take_damage(amount: int):
 		die()
 
 func die():
+	deselect()
 	print(name, " has died!")
 	queue_free()
 

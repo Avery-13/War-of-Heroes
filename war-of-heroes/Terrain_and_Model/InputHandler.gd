@@ -78,7 +78,7 @@ func handle_left_click(mouse_position: Vector2) -> void:
 		print("Parent groups: ", clicked_object.get_parent().get_groups())
 	
 	# 1. Check for worker -> empty factory interaction
-	if selected_unit and is_instance_valid(selected_unit) and selected_unit.is_in_group("Ally_Worker"):
+	if selected_unit != null and is_instance_valid(selected_unit) and selected_unit.is_in_group("Ally_Worker"):
 		var factory = _find_factory_in_parents(clicked_object)
 		if is_instance_valid(factory) and factory.is_in_group("Empty_Factory"):
 			selected_unit.convert_factory(factory)
@@ -88,7 +88,7 @@ func handle_left_click(mouse_position: Vector2) -> void:
 			return
 	
 	# 2. Check for combat unit -> enemy factory interaction
-	if selected_unit and not selected_unit.is_in_group("Ally_Worker"):
+	if selected_unit != null and not selected_unit.is_in_group("Ally_Worker"):
 		var factory = _find_factory_in_parents(clicked_object)
 		if factory and factory.is_in_group("Enemy_Factory"):
 			print("Combat unit commanded to attack enemy factory")
@@ -120,7 +120,7 @@ func handle_left_click(mouse_position: Vector2) -> void:
 		return
 	
 	# 6. Default movement command
-	if selected_unit:
+	if selected_unit != null:
 		print("Moving to position")
 		selected_unit.move_to(position_clicked)
 
@@ -157,7 +157,7 @@ func select_building(building: Node3D) -> void:
 	#selected_building.select()
 
 func deselect_current() -> void:
-	if selected_unit:
+	if selected_unit != null:
 		selected_unit.deselect()
 		selected_unit = null
 	if selected_building:
@@ -171,7 +171,7 @@ func handle_right_click() -> void:
 	deselect_current()
 
 func attack_enemy(enemy: Node3D) -> void:
-	if selected_unit and selected_unit.has_method("attack"):
+	if selected_unit != null and selected_unit.has_method("attack"):
 		selected_unit.attack(enemy)
 
 func handle_unit_command(position: Vector3, clicked_object: Node3D):
