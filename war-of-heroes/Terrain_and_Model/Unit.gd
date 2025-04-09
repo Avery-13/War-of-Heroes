@@ -146,6 +146,10 @@ func attack(enemy: Node3D) -> void:
 		# Special case for enemy factories
 		target_enemy_factory = enemy
 		move_to(enemy.global_transform.origin)
+	elif enemy.is_in_group("Enemy_HQ"):
+		# Attack enemy HQ
+		attack_target = enemy
+		move_to(enemy.global_transform.origin)
 	else:
 		# Normal attack behavior
 		attack_target = enemy
@@ -217,6 +221,10 @@ func _physics_process(delta: float) -> void:
 				if attack_target.has_method("take_damage"):
 					attack_target.take_damage(attack_damage)
 					print("Dealt ", attack_damage, " damage to ", attack_target.name, " remaining health: ", attack_target.health)
+				elif attack_target.is_in_group("Enemy_HQ"):
+					HQManager.damage_enemy_hq(attack_damage)
+				elif attack_target.is_in_group("Ally_HQ"):
+					HQManager.damage_ally_hq(attack_damage)
 				time_since_last_attack = 0.0
 			else:
 				update_animation_parameters("idle")

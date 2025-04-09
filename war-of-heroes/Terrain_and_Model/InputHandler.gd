@@ -114,8 +114,8 @@ func handle_left_click(mouse_position: Vector2) -> void:
 		return
 	
 	# 5. Check for enemy unit attack
-	if clicked_object.is_in_group("Enemy_Units") and selected_unit:
-		print("Attacking enemy unit")
+	if (clicked_object.is_in_group("Enemy_Units") or clicked_object.is_in_group("Enemy_HQ")) and selected_unit:
+		print("Attacking enemy target:", clicked_object.name)
 		attack_enemy(clicked_object)
 		return
 	
