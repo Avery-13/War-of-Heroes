@@ -131,9 +131,7 @@ func move_to(new_target_position: Vector3) -> void:
 func take_damage(amount: int):
 	health -= amount
 	health = max(health, 0)
-	print("health: ", health)
 	if health_bar and health_bar.has_method("update_health"):
-		print("healthbarrrrrrrrrrrrrrrr")
 		health_bar.update_health(health, max_health)
 	if health <= 0:
 		die()
@@ -165,6 +163,22 @@ func attack(enemy: Node3D) -> void:
 func destroy_enemy(enemy: Node3D) -> void:
 	enemy.queue_free()  # Destroy the enemy
 	print("Enemy destroyed!")
+
+func locate_closest_empty_factory():
+	var closest_factory = null
+	var min_distance = 999
+	
+	for factory in get_tree().get_nodes_in_group("Empty_Factory"):
+		var distance = global_position.distance_to(factory.global_position)
+		if distance < min_distance:
+			min_distance = distance
+			closest_factory = factory
+	
+	if closest_factory:
+		target_factory = closest_factory
+		convert_factory(target_factory)
+
+
 
 func return_selected():
 	return is_selected
@@ -199,17 +213,17 @@ func _physics_process(delta: float) -> void:
 			look_pos.y = global_position.y  # Keep the y-coordinate the same
 			look_at(look_pos, Vector3.UP)
 			move_and_slide()
-		
+			# Check if reached target factory for conversion
+			if target_factory and global_transform.origin.distance_to(target_factory.global_transform.origin) <= 3.0:
+				_complete_conversion()
+				target_position = Vector3.ZERO		
 		else:
 			# Stop moving when close to the target
 			velocity = Vector3.ZERO
 			target_position = Vector3.ZERO
 			update_animation_parameters("idle")
 			
-			# Check if reached target factory for conversion
-			if target_factory and global_transform.origin.distance_to(target_factory.global_transform.origin) <= 3.0:
-				_complete_conversion()
-				target_position = Vector3.ZERO
+
 			
 			# Check if reached enemy factory for attack
 			if is_instance_valid(target_enemy_factory):
@@ -375,7 +389,7 @@ func perform_action(action_name: String) -> void:
 			rest()
 
 		"Convert":
-			print("Click on a factory to convert it.")
+			locate_closest_empty_factory()
 			
 
 		"Attack":
