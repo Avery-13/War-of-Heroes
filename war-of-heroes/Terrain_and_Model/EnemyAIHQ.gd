@@ -12,7 +12,7 @@ func _ready() -> void:
 	var timer = Timer.new()
 	add_child(timer)
 	timer.start()
-	timer.wait_time = 10
+	timer.wait_time = 30
 	timer.timeout.connect(_on_timer_timeout) 
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
