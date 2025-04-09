@@ -9,6 +9,12 @@ var attack_range: float = 6.0  # Range within which the unit can attack
 var attack_cooldown: float = 1.0  # Time between attacks
 var time_since_last_attack: float = 0.0  # Timer for attack cooldown
 
+# Ability for hero
+var is_ability_active: bool = false
+var ability_timer: float = 0.0
+const ABILITY_DURATION: float = 15.0
+var original_stats: Dictionary = {}  # To store original values before ability
+
 # Health Bar
 @onready var health_bar =   get_child(0) # Reference to the health bar node
 @onready var health_bar_3d = $HealthBar3D  # Reference to the 3D health bar node
@@ -169,6 +175,12 @@ func convert_factory(factory: Node3D) -> void:
 		move_to(factory.global_transform.origin)  # Move to factory first
 
 func _physics_process(delta: float) -> void:
+	# Ability timer handling
+	if is_ability_active:
+		ability_timer -= delta
+		if ability_timer <= 0:
+			deactivate_ability()
+	
 	time_since_last_attack += delta
 	# Resource pickup logic
 	resource_check_timer += delta
@@ -281,20 +293,20 @@ func _handle_health_resource(resource: StaticBody3D):
 
 func _handle_construction_resource(resource: StaticBody3D, resources: Node):
 	if is_in_group("Ally_Units"):
-		resources.iron += 10
+		resources.iron += 100
 	else:
-		resources.enemy_iron += 10
+		resources.enemy_iron += 100
 	_destroy_resource(resource)
 
 func _handle_money_resource(resource: StaticBody3D, resources: Node):
 	if is_in_group("Ally_Units"):
-		resources.gold += 10
+		resources.gold += 100
 	else:
-		resources.enemy_gold += 10
+		resources.enemy_gold += 100
 	_destroy_resource(resource)
 
 func _heal_nearby_units(unit_group: String):
-	var heal_amount = 10
+	var heal_amount = 20
 	var heal_radius = 5.0
 	
 	for unit in get_tree().get_nodes_in_group(unit_group):
@@ -343,6 +355,11 @@ func perform_action(action_name: String) -> void:
 		"Move":
 			print("Move action selected — waiting for click on map")
 			
+		"Ability":
+			if not is_ability_active:
+				activate_ability()
+			else:
+				print("Ability is already active!")
 
 		"Attack Nearest":
 			attack_nearest_enemy()
@@ -385,6 +402,60 @@ func _convert_enemy_factory():
 		target_enemy_factory.convert_to_ally()
 	target_enemy_factory = null
 
+func activate_ability():
+	if is_ability_active:
+		return  # Already active
+	
+	print("Ability activated! Stats doubled for ", ABILITY_DURATION, " seconds")
+	
+	# Store original stats
+	original_stats = {
+		"health": health,
+		"max_health": max_health,
+		"speed": speed,
+		"attack_damage": attack_damage,
+		"attack_range": attack_range,
+		"attack_cooldown": attack_cooldown
+	}
+	
+	# Double all stats
+	health *= 2
+	max_health *= 2
+	speed *= 2
+	attack_damage *= 2
+	attack_range *= 2
+	attack_cooldown *= 0.5  # Halved cooldown is effectively double attack speed
+	
+	# Update health display
+	if health_bar and health_bar.has_method("update_health"):
+		health_bar.update_health(health, max_health)
+	
+	is_ability_active = true
+	ability_timer = ABILITY_DURATION
+
+func deactivate_ability():
+	if !is_ability_active:
+		return
+	
+	print("Ability deactivated. Stats returning to normal")
+	
+	# Restore original stats
+	health = original_stats["health"]
+	max_health = original_stats["max_health"]
+	speed = original_stats["speed"]
+	attack_damage = original_stats["attack_damage"]
+	attack_range = original_stats["attack_range"]
+	attack_cooldown = original_stats["attack_cooldown"]
+	
+	# Ensure health doesn't exceed max health
+	health = min(health, max_health)
+	
+	# Update health display
+	if health_bar and health_bar.has_method("update_health"):
+		health_bar.update_health(health, max_health)
+	
+	is_ability_active = false
+	original_stats = {}
 
 func update_animation_parameters(action: String):
 	# move 
