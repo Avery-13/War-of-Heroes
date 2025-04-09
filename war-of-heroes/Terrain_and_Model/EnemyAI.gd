@@ -20,9 +20,11 @@ var attack_target: Node3D = null
 # AI Behavior Parameters
 var detection_radius: float = 30.0
 var hq_detection_radius: float = 50.0
+var factory_detection_radius: float = 100.0
 var retreat_distance: float = 40.0
 var is_retreat: bool = false
 var timer 
+var enemy_near_
 
 # Unit Type Values
 var infantry_value: int = 1
@@ -148,25 +150,36 @@ func _physics_process(delta: float) -> void:
 	var tank = "Enemy_Tank" in get_groups()
 	var hero = "Enemy_Hero" in get_groups()
 	
+	# All units get the retreat option
 	if worker or infantry or marksman or tank or hero:
 		var player_strength = get_nearby_player_strength()
 		var ai_strength = get_nearby_ai_strength()
-		
+		# if the player strength is higher then the AI stregnth in the area, retreat
 		if player_strength > ai_strength and is_retreat == false: 
 			is_retreat = true  
 			timer.start()
 			timer.wait_time = 5
 			retreat()
-			
+		# if units is not retreating and the player stregnth is not higher, attack
 		else:
 			if is_retreat == false:
 				if infantry or marksman or tank or hero:
+					# attack nearby player units if they exist
 					var target = prioritize_target()
 					if target != null:
 						attack(target)
+					# or if there are no nearby targets, but there are ally units near ai factories and the unit itself is nearby, defend the factory
+					elif (target == null and player_units_nearby_factory!= null):
+						var help_factory = player_units_nearby_factory()
+						if (help_factory != null):
+							timer.start()
+							timer.wait_time = 5
+							set_movement_target(help_factory.position)
+					# otherwise attack the player HQ
 					else:
 						set_movement_target(player_hq_building.position)
 	
+	# workers will find the cloest empty factory to capture
 	if worker:
 		locate_closest_empty_factory()
 	
@@ -215,7 +228,7 @@ func retreat():
 
 func locate_closest_empty_factory():
 	var closest_factory = null
-	var min_distance = INF
+	var min_distance = 999
 	
 	for factory in get_tree().get_nodes_in_group("Empty_Factory"):
 		var distance = global_position.distance_to(factory.global_position)
@@ -347,6 +360,36 @@ func get_nearby_ai_units():
 			if is_instance_valid(unit) and global_position.distance_to(unit.global_position) <= detection_radius:
 				units.append(unit)
 	return units
+
+func player_units_nearby_factory():				
+	# determine if the unit is close enough to help any nearby ai factory
+	var factory_list = []
+	for factory in get_tree().get_nodes_in_group("Enemy_Factory"):
+		if global_position.distance_to(factory.global_position) <= factory_detection_radius:
+			factory_list.append(factory)
+	
+	var found_enemy = false
+	var help_factory
+	if (!factory_list.is_empty()):
+		# determine if there is an enemy near the factory and store that factory
+		for group in ["Ally_Infantry", "Ally_Marksman", "Ally_Tank", "Ally_Hero"]:
+			for unit in get_tree().get_nodes_in_group(group):
+				for factory in factory_list:
+					if unit.global_position.distance_to(factory.global_position) <= factory_detection_radius:
+						found_enemy = true
+						help_factory = factory
+						break
+				if found_enemy == true:
+					break
+			if found_enemy == true:
+				break
+	
+	# if enemy is found return that factory
+	if (found_enemy == true):
+		return help_factory
+	# otherwise, return nothing
+	else:
+		return null
 
 # timer for retreating
 func _on_timer_timeout():
