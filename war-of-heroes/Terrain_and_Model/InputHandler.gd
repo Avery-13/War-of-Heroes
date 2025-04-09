@@ -19,6 +19,8 @@ var selected_unit: Node3D = null:
 var selected_building: Node3D = null
 
 func _ready():
+	get_tree().paused = true  # Pause game until player starts
+	
 	# Method 1: Try absolute path from root
 	camera = get_node("/root/Node3D/RTScamera/Camera3D") 
 	

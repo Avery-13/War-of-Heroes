@@ -15,6 +15,7 @@ var ally_hq: Node3D
 var enemy_hq: Node3D
 
 func _ready():
+	
 	# Find HQs in the scene
 	ally_hq = get_node("/root/Node3D/StaticBody3D_HQ_Player")
 	ally_hq_health_bar = ally_hq.get_child(0)
